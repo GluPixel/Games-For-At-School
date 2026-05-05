@@ -3,17 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V5 Fixed</title>
+<title>Dylans Arcade SAFE V5</title>
 
 <style>
 :root{
 --bg:#060812;
 --bg2:#0d1230;
 --panel:#141b33;
---panel2:#1c2550;
 --line:rgba(255,255,255,.08);
 --text:#f6f8ff;
---muted:#9aa7d1;
 --accent:#7c5cff;
 --blue:#38c6ff;
 }
@@ -24,32 +22,28 @@ margin:0;
 padding:0;
 }
 
-html,body{
-height:100%;
-overflow:hidden;
+body{
 font-family:Arial,Helvetica,sans-serif;
 background:linear-gradient(180deg,var(--bg),var(--bg2));
 color:var(--text);
+
+/* IMPORTANT: allow normal page scroll */
+overflow-y:auto;
+overflow-x:hidden;
+min-height:100vh;
 }
 
-/* LAYOUT */
-.app{
-display:flex;
-height:100vh;
-width:100%;
-}
-
-/* SIDEBAR FIXED */
+/* FIXED SIDEBAR (does NOT affect scrolling) */
 .sidebar{
 position:fixed;
-left:0;
 top:0;
-bottom:0;
+left:0;
 width:260px;
+height:100vh;
 background:#0a1020;
 border-right:1px solid var(--line);
-overflow-y:auto;
 padding:14px;
+overflow-y:auto;
 }
 
 .logo{
@@ -82,37 +76,9 @@ cursor:pointer;
 text-align:left;
 }
 
-/* MAIN AREA */
+/* MAIN PAGE CONTENT (NORMAL FLOW — THIS FIXES EVERYTHING) */
 .main{
 margin-left:260px;
-height:100vh;
-display:flex;
-flex-direction:column;
-}
-
-/* TOPBAR */
-.topbar{
-padding:12px;
-border-bottom:1px solid var(--line);
-background:#0a1020;
-display:flex;
-gap:10px;
-}
-
-.search{
-flex:1;
-padding:12px;
-border-radius:12px;
-border:none;
-background:var(--panel);
-color:white;
-outline:none;
-}
-
-/* CONTENT SCROLL AREA (FIX) */
-.content{
-flex:1;
-overflow-y:auto;
 padding:14px;
 }
 
@@ -121,7 +87,7 @@ padding:14px;
 padding:16px;
 border-radius:14px;
 background:linear-gradient(135deg,var(--accent),#3b82f6);
-margin-bottom:12px;
+margin-bottom:14px;
 }
 
 /* GRID */
@@ -163,8 +129,7 @@ padding:12px;
 
 .tags{
 font-size:11px;
-color:var(--muted);
-margin-top:4px;
+opacity:.7;
 }
 
 .actions{
@@ -202,8 +167,8 @@ margin-top:6px;
 /* PLAYER */
 .player{
 display:none;
+margin-top:16px;
 height:70vh;
-margin-top:12px;
 border-radius:14px;
 overflow:hidden;
 }
@@ -213,66 +178,33 @@ width:100%;
 height:100%;
 border:none;
 }
-
-/* TOAST */
-.toast{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#111a33;
-padding:10px 14px;
-border-radius:10px;
-border:1px solid var(--line);
-opacity:0;
-transform:translateY(10px);
-transition:.3s;
-}
-
-.toast.show{
-opacity:1;
-transform:translateY(0);
-}
 </style>
 </head>
 
 <body>
 
-<div class="toast" id="toast"></div>
-
-<div class="app">
-
 <!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">🎮 Arcade V5</div>
-
+<div class="logo">🎮 Arcade SAFE</div>
 <div class="profile" id="profile">Player: Guest</div>
 
-<button class="sideBtn" onclick="setName()">👤 Set Name</button>
-<button class="sideBtn" onclick="showAll()">🔥 All Games</button>
+<button class="sideBtn" onclick="setName()">👤 Name</button>
+<button class="sideBtn" onclick="showAll()">🔥 All</button>
 <button class="sideBtn" onclick="showTrending()">🏆 Trending</button>
 </div>
 
-<!-- MAIN -->
+<!-- MAIN PAGE -->
 <div class="main">
 
-<div class="topbar">
-<input class="search" placeholder="Search games..." oninput="search(this.value)">
-</div>
-
-<div class="content">
-
 <div class="hero">
-<h2>Dylans Arcade V5 (Fixed)</h2>
-<p>Now scrolling works properly + sidebar is locked</p>
+<h2>Dylans Arcade SAFE MODE</h2>
+<p>Fixed scrolling — no clipping — no broken layout</p>
 </div>
 
 <div class="grid" id="grid"></div>
 
 <div class="player" id="player">
 <iframe id="frame"></iframe>
-</div>
-
-</div>
 </div>
 
 </div>
@@ -288,24 +220,12 @@ let games=[
 let likes=JSON.parse(localStorage.getItem("likes")||"{}");
 let playerName=localStorage.getItem("name")||"Guest";
 
-function toast(msg){
-let t=document.getElementById("toast");
-t.innerText=msg;
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),1200);
-}
-
-function save(){
-localStorage.setItem("likes",JSON.stringify(likes));
-}
-
 function setName(){
-let n=prompt("Enter name:");
+let n=prompt("Name?");
 if(!n)return;
 playerName=n;
 localStorage.setItem("name",n);
 document.getElementById("profile").innerText="Player: "+n;
-toast("Name saved");
 }
 
 function render(list=games){
@@ -333,18 +253,13 @@ g.innerHTML+=`
 
 function like(name){
 likes[name]=(likes[name]||0)+1;
-save();
+localStorage.setItem("likes",JSON.stringify(likes));
 render();
-toast("+1 Like ❤️");
 }
 
 function play(url){
 document.getElementById("frame").src=url;
 document.getElementById("player").style.display="block";
-}
-
-function search(q){
-render(games.filter(g=>g.name.toLowerCase().includes(q.toLowerCase())));
 }
 
 function showAll(){render(games);}
