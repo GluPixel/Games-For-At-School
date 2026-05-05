@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V6 FIXED</title>
+<title>Dylans Arcade V7</title>
 
 <style>
 :root{
@@ -181,6 +181,44 @@ font-size:12px;
 color:#ffb3c1;
 margin-top:6px;
 }
+
+/* PLAYER */
+.player{
+display:none;
+margin-top:16px;
+height:75vh;
+border-radius:14px;
+overflow:hidden;
+position:relative;
+}
+
+.playerTop{
+position:absolute;
+top:0;
+left:0;
+right:0;
+z-index:10;
+display:flex;
+justify-content:space-between;
+padding:10px;
+background:rgba(0,0,0,.4);
+backdrop-filter:blur(6px);
+}
+
+.playerTop button{
+border:none;
+padding:8px 10px;
+border-radius:8px;
+cursor:pointer;
+background:#222c4a;
+color:white;
+}
+
+iframe{
+width:100%;
+height:100%;
+border:none;
+}
 </style>
 </head>
 
@@ -188,7 +226,7 @@ margin-top:6px;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">🎮 Arcade V6</div>
+<div class="logo">🎮 Arcade V7</div>
 
 <button class="sideBtn" onclick="showAll()">🔥 All Games</button>
 <button class="sideBtn" onclick="showTrending()">🏆 Trending</button>
@@ -198,8 +236,8 @@ margin-top:6px;
 <div class="main">
 
 <div class="hero">
-<h2>Dylans Arcade V6 FIXED</h2>
-<p>Add games works + logos fixed + stable system</p>
+<h2>Dylans Arcade V7</h2>
+<p>Fullscreen system + added games = same behavior</p>
 </div>
 
 <!-- ADD GAME -->
@@ -212,6 +250,17 @@ margin-top:6px;
 </div>
 
 <div class="grid" id="grid"></div>
+
+<!-- PLAYER -->
+<div class="player" id="player">
+
+<div class="playerTop">
+<button onclick="exitGame()">✖ Close</button>
+<button onclick="toggleFullscreen()">⛶ Fullscreen</button>
+</div>
+
+<iframe id="frame" allow="fullscreen"></iframe>
+</div>
 
 </div>
 
@@ -234,20 +283,17 @@ img:"https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper
 name:"Shell Shockers",
 cat:"multiplayer",
 url:"https://sites.google.com/bluewizard.com/play-shell/home",
-
-/* FIXED LOGO (reliable CDN) */
 img:"https://upload.wikimedia.org/wikipedia/en/3/3f/Shell_Shockers_logo.png"
 }
 ];
 
 let likes = JSON.parse(localStorage.getItem("likes") || "{}");
 
-/* SAVE */
 function save(){
 localStorage.setItem("games",JSON.stringify(games));
 }
 
-/* ADD GAME (FIXED) */
+/* ADD GAME */
 function addGame(){
 
 let n=document.getElementById("gname").value.trim();
@@ -255,28 +301,42 @@ let c=document.getElementById("gcat").value.trim();
 let u=document.getElementById("gurl").value.trim();
 let i=document.getElementById("gimg").value.trim();
 
-if(!n || !u || !i){
-alert("Please fill all fields");
+if(!n||!u||!i){
+alert("Fill all fields");
 return;
 }
 
-games.push({
-name:n,
-cat:c,
-url:u,
-img:i
-});
-
+games.push({name:n,cat:c,url:u,img:i});
 save();
 render();
 
-/* clear inputs */
 document.getElementById("gname").value="";
 document.getElementById("gcat").value="";
 document.getElementById("gurl").value="";
 document.getElementById("gimg").value="";
+}
 
-alert("Game added!");
+/* PLAY (NOW ALL SAME SYSTEM) */
+function play(url){
+document.getElementById("frame").src=url;
+document.getElementById("player").style.display="block";
+}
+
+/* EXIT */
+function exitGame(){
+document.getElementById("frame").src="";
+document.getElementById("player").style.display="none";
+}
+
+/* FULLSCREEN */
+function toggleFullscreen(){
+let el=document.getElementById("player");
+
+if(!document.fullscreenElement){
+el.requestFullscreen();
+}else{
+document.exitFullscreen();
+}
 }
 
 /* LIKE */
@@ -287,18 +347,16 @@ render();
 }
 
 /* RENDER */
-function render(list=games){
+function render(){
 let g=document.getElementById("grid");
 g.innerHTML="";
 
-list.forEach(x=>{
+games.forEach(x=>{
 let l=likes[x.name]||0;
 
 g.innerHTML+=`
 <div class="card">
-<div class="thumb">
-<img src="${x.img}">
-</div>
+<div class="thumb"><img src="${x.img}"></div>
 
 <div class="info">
 <h3>${x.name}</h3>
@@ -306,7 +364,7 @@ g.innerHTML+=`
 <div class="badge">❤️ ${l}</div>
 
 <div class="actions">
-<button class="play" onclick="window.open('${x.url}','_blank')">Play</button>
+<button class="play" onclick="play('${x.url}')">Play</button>
 <button class="like" onclick="like('${x.name}')">❤️</button>
 </div>
 
@@ -316,13 +374,13 @@ g.innerHTML+=`
 }
 
 /* FILTERS */
-function showAll(){render(games);}
+function showAll(){render();}
 
 function showTrending(){
-render([...games].sort((a,b)=>(likes[b.name]||0)-(likes[a.name]||0)));
+games.sort((a,b)=>(likes[b.name]||0)-(likes[a.name]||0));
+render();
 }
 
-/* INIT */
 render();
 
 </script>
