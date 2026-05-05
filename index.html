@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade Fixed</title>
+<title>Dylans Arcade</title>
 
 <style>
 :root{
@@ -148,8 +148,7 @@ cursor:pointer;
 .player{
 display:none;
 position:fixed;
-top:0;
-left:0;
+top:0;left:0;
 width:100vw;
 height:100vh;
 background:black;
@@ -175,11 +174,11 @@ cursor:pointer;
 z-index:10000;
 }
 
-/* PANIC BUTTON */
+/* PANIC BUTTON (FIXED POSITION - NO OVERLAP) */
 .panicBtn{
 position:fixed;
 top:10px;
-right:10px;
+right:80px; /* 👈 moved away from exit button */
 z-index:100000;
 padding:8px 10px;
 border:none;
@@ -188,13 +187,14 @@ background:linear-gradient(135deg,var(--accent),var(--blue));
 color:white;
 font-weight:bold;
 cursor:pointer;
+opacity:0.95;
 }
 </style>
 </head>
 
 <body>
 
-<!-- PANIC BUTTON (OPEN GOOGLE) -->
+<!-- PANIC BUTTON (OPENS GOOGLE) -->
 <button class="panicBtn" onclick="window.open('https://www.google.com','_blank')">
 📊 Panic
 </button>
@@ -227,7 +227,7 @@ cursor:pointer;
 
 <script>
 
-/* LOAD */
+/* LOAD GAMES */
 let games = JSON.parse(localStorage.getItem("games")) || [
 {
 name:"Bloons Battles",
@@ -253,7 +253,7 @@ function save(){
 localStorage.setItem("games",JSON.stringify(games));
 }
 
-/* ADD */
+/* ADD GAME */
 function addGame(){
 
 let n=document.getElementById("name").value.trim();
@@ -282,13 +282,13 @@ document.getElementById("frame").src=url;
 document.getElementById("player").style.display="block";
 }
 
-/* EXIT */
+/* EXIT GAME */
 function exitGame(){
 document.getElementById("player").style.display="none";
 document.getElementById("frame").src="";
 }
 
-/* DELETE */
+/* DELETE GAME */
 function deleteGame(i){
 games.splice(i,1);
 save();
