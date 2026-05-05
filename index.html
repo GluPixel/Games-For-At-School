@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V9</title>
+<title>Dylans Arcade V10</title>
 
 <style>
 :root{
@@ -14,7 +14,7 @@
 --text:#f6f8ff;
 --accent:#7c5cff;
 --blue:#38c6ff;
---red:#ff3b5c;
+--red:#ff4d6d;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -37,6 +37,16 @@ border-right:1px solid var(--line);
 padding:14px;
 }
 
+.logo{
+font-size:20px;
+font-weight:900;
+padding:14px;
+border-radius:14px;
+text-align:center;
+background:linear-gradient(135deg,var(--accent),var(--blue));
+margin-bottom:10px;
+}
+
 /* MAIN */
 .main{
 margin-left:260px;
@@ -55,8 +65,8 @@ margin-bottom:14px;
 
 .addBox input{
 padding:10px;
-border-radius:10px;
 border:none;
+border-radius:10px;
 background:#0f1428;
 color:white;
 }
@@ -84,8 +94,6 @@ background:var(--panel);
 border-radius:14px;
 overflow:hidden;
 border:1px solid var(--line);
-display:flex;
-flex-direction:column;
 }
 
 .thumb{
@@ -103,16 +111,13 @@ max-height:100%;
 
 .info{
 padding:12px;
-display:flex;
-flex-direction:column;
-gap:6px;
 }
 
-/* BUTTON ROW */
+/* BUTTONS */
 .actions{
 display:flex;
-gap:8px;
-margin-top:8px;
+gap:6px;
+margin-top:10px;
 }
 
 .play{
@@ -126,28 +131,54 @@ font-weight:bold;
 cursor:pointer;
 }
 
+.like{
+padding:10px;
+border:none;
+border-radius:10px;
+background:#26324d;
+color:white;
+cursor:pointer;
+}
+
 .delete{
 padding:10px;
 border:none;
 border-radius:10px;
 background:var(--red);
 color:white;
-font-weight:bold;
 cursor:pointer;
-}
-
-/* FORCE DELETE VISIBILITY */
-.delete:hover{
-filter:brightness(1.2);
 }
 
 /* PLAYER */
 .player{
 display:none;
 margin-top:16px;
-height:70vh;
+height:75vh;
 border-radius:14px;
 overflow:hidden;
+position:relative;
+}
+
+.playerTop{
+position:absolute;
+top:0;
+left:0;
+right:0;
+z-index:10;
+display:flex;
+justify-content:space-between;
+padding:10px;
+background:rgba(0,0,0,.5);
+backdrop-filter:blur(6px);
+}
+
+.playerTop button{
+border:none;
+padding:8px 10px;
+border-radius:8px;
+cursor:pointer;
+background:#222c4a;
+color:white;
 }
 
 iframe{
@@ -161,7 +192,7 @@ border:none;
 <body>
 
 <div class="sidebar">
-<h2>🎮 Arcade V9</h2>
+<div class="logo">🎮 Arcade V10</div>
 </div>
 
 <div class="main">
@@ -177,8 +208,16 @@ border:none;
 
 <div class="grid" id="grid"></div>
 
-<div class="player">
-<iframe id="frame"></iframe>
+<!-- PLAYER -->
+<div class="player" id="player">
+
+<div class="playerTop">
+<button onclick="exitGame()">✖ Exit</button>
+<button onclick="toggleFullscreen()">⛶ Fullscreen</button>
+</div>
+
+<iframe id="frame" allow="fullscreen"></iframe>
+
 </div>
 
 </div>
@@ -199,10 +238,10 @@ url:"https://www.rocketgames.io/embed/paper-flight",
 img:"https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper-flight.jpeg"
 },
 {
-name:"Shell Shockers",
-cat:"multiplayer",
-url:"https://sites.google.com/bluewizard.com/play-shell/home",
-img:"https://upload.wikimedia.org/wikipedia/en/3/3f/Shell_Shockers_logo.png"
+name:"Minecraft (Mcraft.fun)",
+cat:"sandbox",
+url:"https://mcraft.fun",
+img:"https://tse4.mm.bing.net/th/id/OIP.JzuDWurtzG4ylwJNGwKbHQHaEK?pid=Api&P=0&h=180"
 }
 ];
 
@@ -210,7 +249,7 @@ function save(){
 localStorage.setItem("games",JSON.stringify(games));
 }
 
-/* ADD GAME (FIXED) */
+/* ADD GAME */
 function addGame(){
 
 let n=document.getElementById("name").value.trim();
@@ -233,25 +272,35 @@ document.getElementById("url").value="";
 document.getElementById("img").value="";
 }
 
-/* DELETE (FIXED RELIABLE INDEX) */
-function deleteGame(index){
-games.splice(index,1);
-save();
-render();
-}
-
 /* PLAY */
 function play(url){
 document.getElementById("frame").src=url;
-document.querySelector(".player").style.display="block";
+document.getElementById("player").style.display="block";
 }
 
-/* RENDER (FIXED INDEX BINDING) */
+/* EXIT */
+function exitGame(){
+document.getElementById("frame").src="";
+document.getElementById("player").style.display="none";
+}
+
+/* FULLSCREEN (FIXED) */
+function toggleFullscreen(){
+let el=document.getElementById("player");
+
+if(!document.fullscreenElement){
+el.requestFullscreen();
+}else{
+document.exitFullscreen();
+}
+}
+
+/* RENDER */
 function render(){
 let g=document.getElementById("grid");
 g.innerHTML="";
 
-games.forEach((x,index)=>{
+games.forEach((x,i)=>{
 
 g.innerHTML+=`
 <div class="card">
@@ -265,7 +314,8 @@ g.innerHTML+=`
 
 <div class="actions">
 <button class="play" onclick="play('${x.url}')">Play</button>
-<button class="delete" onclick="deleteGame(${index})">🗑 Delete</button>
+<button class="like">❤️</button>
+<button class="delete" onclick="games.splice(${i},1);save();render()">🗑</button>
 </div>
 
 </div>
