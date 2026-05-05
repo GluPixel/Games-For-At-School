@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Dylans Arcade V5 GOD MODE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dylans Arcade V5 Fixed</title>
 
 <style>
 :root{
@@ -16,86 +16,122 @@
 --muted:#9aa7d1;
 --accent:#7c5cff;
 --blue:#38c6ff;
---green:#2fd27f;
---red:#ff5b6e;
---gold:#ffcc66;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-body{
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+html,body{
+height:100%;
+overflow:hidden;
 font-family:Arial,Helvetica,sans-serif;
 background:linear-gradient(180deg,var(--bg),var(--bg2));
 color:var(--text);
-height:100vh;
-overflow:hidden;
 }
 
+/* LAYOUT */
 .app{
-display:block;
+display:flex;
 height:100vh;
+width:100%;
 }
 
+/* SIDEBAR FIXED */
 .sidebar{
 position:fixed;
-top:0;
 left:0;
+top:0;
+bottom:0;
 width:260px;
-height:100vh;
 background:#0a1020;
-padding:14px;
 border-right:1px solid var(--line);
 overflow-y:auto;
+padding:14px;
 }
 
 .logo{
-font-size:22px;font-weight:900;
-padding:14px;border-radius:14px;
+font-size:20px;
+font-weight:900;
+padding:14px;
+border-radius:14px;
+text-align:center;
 background:linear-gradient(135deg,var(--accent),var(--blue));
-text-align:center;margin-bottom:10px;
+margin-bottom:10px;
 }
 
 .profile{
 background:var(--panel);
-padding:10px;border-radius:12px;
-font-size:12px;margin-bottom:10px;
+padding:10px;
+border-radius:12px;
+font-size:12px;
+margin-bottom:10px;
 }
 
 .sideBtn{
-width:100%;padding:10px;margin:5px 0;
-border:none;border-radius:10px;
+width:100%;
+padding:10px;
+margin:5px 0;
+border:none;
+border-radius:10px;
 background:var(--panel);
-color:white;cursor:pointer;text-align:left;
+color:white;
+cursor:pointer;
+text-align:left;
 }
 
-.main{display:flex;flex-direction:column}
+/* MAIN AREA */
+.main{
+margin-left:260px;
+height:100vh;
+display:flex;
+flex-direction:column;
+}
 
+/* TOPBAR */
 .topbar{
 padding:12px;
 border-bottom:1px solid var(--line);
 background:#0a1020;
-display:flex;gap:10px;
+display:flex;
+gap:10px;
 }
 
 .search{
-flex:1;padding:12px;border-radius:12px;
-border:none;background:var(--panel);
+flex:1;
+padding:12px;
+border-radius:12px;
+border:none;
+background:var(--panel);
 color:white;
+outline:none;
 }
 
-.content{padding:14px;overflow-y:auto}
+/* CONTENT SCROLL AREA (FIX) */
+.content{
+flex:1;
+overflow-y:auto;
+padding:14px;
+}
 
+/* HERO */
 .hero{
-padding:16px;border-radius:14px;
+padding:16px;
+border-radius:14px;
 background:linear-gradient(135deg,var(--accent),#3b82f6);
 margin-bottom:12px;
 }
 
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
 gap:12px;
 }
 
+/* CARD */
 .card{
 background:var(--panel);
 border-radius:14px;
@@ -104,50 +140,97 @@ border:1px solid var(--line);
 transition:.15s;
 }
 
-.card:hover{transform:translateY(-4px)}
+.card:hover{
+transform:translateY(-4px);
+}
 
-.thumb{height:140px;display:flex;align-items:center;justify-content:center;background:#0f1428}
-.thumb img{max-width:100%;max-height:100%}
+.thumb{
+height:140px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#0f1428;
+}
 
-.info{padding:12px}
+.thumb img{
+max-width:100%;
+max-height:100%;
+}
 
-.tags{font-size:11px;color:var(--muted)}
+.info{
+padding:12px;
+}
 
-.actions{display:flex;gap:6px;margin-top:10px}
+.tags{
+font-size:11px;
+color:var(--muted);
+margin-top:4px;
+}
 
-button{cursor:pointer}
+.actions{
+display:flex;
+gap:6px;
+margin-top:10px;
+}
 
 .play{
-flex:1;padding:10px;border:none;border-radius:10px;
+flex:1;
+padding:10px;
+border:none;
+border-radius:10px;
 background:linear-gradient(135deg,var(--accent),var(--blue));
-color:white;font-weight:bold;
+color:white;
+font-weight:bold;
+cursor:pointer;
 }
 
 .like{
-background:#26324d;border:none;border-radius:10px;
-padding:10px;color:white;
+background:#26324d;
+border:none;
+border-radius:10px;
+padding:10px;
+color:white;
+cursor:pointer;
 }
 
-.badge{font-size:12px;color:#ffb3c1;margin-top:6px}
+.badge{
+font-size:12px;
+color:#ffb3c1;
+margin-top:6px;
+}
 
-.player{display:none;height:70vh;margin-top:12px;border-radius:14px;overflow:hidden}
-iframe{width:100%;height:100%;border:none}
+/* PLAYER */
+.player{
+display:none;
+height:70vh;
+margin-top:12px;
+border-radius:14px;
+overflow:hidden;
+}
 
+iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+/* TOAST */
 .toast{
-position:fixed;bottom:20px;right:20px;
-background:#111a33;padding:10px 14px;
+position:fixed;
+bottom:20px;
+right:20px;
+background:#111a33;
+padding:10px 14px;
 border-radius:10px;
 border:1px solid var(--line);
-opacity:0;transform:translateY(10px);
+opacity:0;
+transform:translateY(10px);
 transition:.3s;
 }
-.toast.show{opacity:1;transform:translateY(0)}
 
-.console{
-position:fixed;left:10px;bottom:10px;
-background:#0b1020;border:1px solid var(--line);
-padding:10px;border-radius:10px;
-font-size:12px;opacity:.8;
+.toast.show{
+opacity:1;
+transform:translateY(0);
 }
 </style>
 </head>
@@ -155,22 +238,21 @@ font-size:12px;opacity:.8;
 <body>
 
 <div class="toast" id="toast"></div>
-<div class="console" id="console">DEV MODE ACTIVE</div>
 
 <div class="app">
 
+<!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">⚡ Arcade V5 GOD</div>
+<div class="logo">🎮 Arcade V5</div>
 
 <div class="profile" id="profile">Player: Guest</div>
 
-<button class="sideBtn" onclick="setName()">👤 Name</button>
-<button class="sideBtn" onclick="addGame()">➕ Add Game</button>
-<button class="sideBtn" onclick="showAll()">🔥 All</button>
+<button class="sideBtn" onclick="setName()">👤 Set Name</button>
+<button class="sideBtn" onclick="showAll()">🔥 All Games</button>
 <button class="sideBtn" onclick="showTrending()">🏆 Trending</button>
-<button class="sideBtn" onclick="showLeaderboard()">📊 Leaderboard</button>
 </div>
 
+<!-- MAIN -->
 <div class="main">
 
 <div class="topbar">
@@ -180,15 +262,19 @@ font-size:12px;opacity:.8;
 <div class="content">
 
 <div class="hero">
-<h2>GOD MODE ARCADE</h2>
-<p>auto system • trending AI • live likes • dev tools • dynamic games</p>
+<h2>Dylans Arcade V5 (Fixed)</h2>
+<p>Now scrolling works properly + sidebar is locked</p>
 </div>
 
 <div class="grid" id="grid"></div>
-<div class="player" id="player"><iframe id="frame"></iframe></div>
+
+<div class="player" id="player">
+<iframe id="frame"></iframe>
+</div>
 
 </div>
 </div>
+
 </div>
 
 <script>
@@ -199,85 +285,76 @@ let games=[
 {name:"Shell Shockers",cat:"multiplayer",url:"https://shellshock.io/",img:"https://shellshock.io/img/favicon.png"}
 ];
 
-let likes=JSON.parse(localStorage.getItem("likes")||"{}")
-let playerName=localStorage.getItem("name")||"Guest"
+let likes=JSON.parse(localStorage.getItem("likes")||"{}");
+let playerName=localStorage.getItem("name")||"Guest";
 
-function toast(m){
-let t=document.getElementById("toast")
-t.innerText=m
-t.classList.add("show")
-setTimeout(()=>t.classList.remove("show"),1200)
+function toast(msg){
+let t=document.getElementById("toast");
+t.innerText=msg;
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),1200);
 }
 
-function save(){localStorage.setItem("likes",JSON.stringify(likes))}
+function save(){
+localStorage.setItem("likes",JSON.stringify(likes));
+}
 
 function setName(){
-let n=prompt("Name?")
-if(!n)return
-playerName=n
-localStorage.setItem("name",n)
-document.getElementById("profile").innerText="Player: "+n
-toast("Name set")
+let n=prompt("Enter name:");
+if(!n)return;
+playerName=n;
+localStorage.setItem("name",n);
+document.getElementById("profile").innerText="Player: "+n;
+toast("Name saved");
 }
 
 function render(list=games){
-let g=document.getElementById("grid")
-g.innerHTML=""
+let g=document.getElementById("grid");
+g.innerHTML="";
+
 list.forEach(x=>{
-let l=likes[x.name]||0
+let l=likes[x.name]||0;
 
 g.innerHTML+=`
-<div class='card'>
-<div class='thumb'><img src='${x.img}'></div>
-<div class='info'>
+<div class="card">
+<div class="thumb"><img src="${x.img}"></div>
+<div class="info">
 <h3>${x.name}</h3>
-<div class='tags'>${x.cat}</div>
-<div class='badge'>❤️ ${l}</div>
-<div class='actions'>
-<button class='play' onclick="play('${x.url}')">Play</button>
-<button class='like' onclick="like('${x.name}')">❤️</button>
+<div class="tags">${x.cat}</div>
+<div class="badge">❤️ ${l}</div>
+<div class="actions">
+<button class="play" onclick="play('${x.url}')">Play</button>
+<button class="like" onclick="like('${x.name}')">❤️</button>
 </div>
 </div>
-</div>`
-})
+</div>`;
+});
 }
 
 function like(name){
-likes[name]=(likes[name]||0)+1
-save()
-render()
-toast("+1 ❤️")
+likes[name]=(likes[name]||0)+1;
+save();
+render();
+toast("+1 Like ❤️");
 }
 
 function play(url){
-document.getElementById("frame").src=url
-document.getElementById("player").style.display="block"
+document.getElementById("frame").src=url;
+document.getElementById("player").style.display="block";
 }
 
-function search(q){render(games.filter(g=>g.name.toLowerCase().includes(q.toLowerCase())))}
-
-function showAll(){render(games)}
-
-function showTrending(){render([...games].sort((a,b)=>(likes[b.name]||0)-(likes[a.name]||0)).slice(0,5))}
-
-function showLeaderboard(){
-let sorted=[...games].sort((a,b)=>(likes[b.name]||0)-(likes[a.name]||0))
-toast("Leaderboard updated")
+function search(q){
+render(games.filter(g=>g.name.toLowerCase().includes(q.toLowerCase())));
 }
 
-function addGame(){
-let name=prompt("Game name")
-let url=prompt("Game URL")
-let img=prompt("Image URL")
-let cat=prompt("Category")
-if(!name||!url)return
-games.push({name,url,img,cat})
-render()
-toast("Game added ⚡")
+function showAll(){render(games);}
+
+function showTrending(){
+render([...games].sort((a,b)=>(likes[b.name]||0)-(likes[a.name]||0)));
 }
 
-render()
-document.getElementById("profile").innerText="Player: "+playerName
+render();
+document.getElementById("profile").innerText="Player: "+playerName;
 
 </script>
 
