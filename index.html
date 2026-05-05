@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade FINAL</title>
+<title>Dylans Arcade FIXED FINAL</title>
 
 <style>
 :root{
@@ -26,8 +26,6 @@ body{
 font-family:Arial,Helvetica,sans-serif;
 background:linear-gradient(180deg,var(--bg),var(--bg2));
 color:var(--text);
-
-/* REAL PAGE SCROLL */
 min-height:100vh;
 overflow-y:auto;
 overflow-x:hidden;
@@ -199,8 +197,8 @@ border:none;
 <div class="main">
 
 <div class="hero">
-<h2>Dylans Arcade</h2>
-<p>Clean fixed system • no bugs • working scroll</p>
+<h2>Dylans Arcade (FINAL FIXED)</h2>
+<p>Everything stable • scrolling fixed • images fixed</p>
 </div>
 
 <div class="grid" id="grid"></div>
@@ -230,7 +228,7 @@ img:"https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper
 name:"Shell Shockers",
 cat:"multiplayer",
 url:"https://sites.google.com/bluewizard.com/play-shell/home",
-img:"https://static.wikia.nocookie.net/shellshockers/images/2/2a/Shell_Shockers_logo.png/revision/latest?cb=20180902103338"
+img:"https://shellshock.io/img/icons/android-chrome-512x512.png"
 }
 ];
 
@@ -254,15 +252,20 @@ let l=likes[x.name]||0;
 
 g.innerHTML+=`
 <div class="card">
-<div class="thumb"><img src="${x.img}"></div>
+<div class="thumb">
+<img src="${x.img}">
+</div>
+
 <div class="info">
 <h3>${x.name}</h3>
 <div class="tags">${x.cat}</div>
 <div class="badge">❤️ ${l}</div>
+
 <div class="actions">
 <button class="play" onclick="play('${x.url}')">Play</button>
 <button class="like" onclick="like('${x.name}')">❤️</button>
 </div>
+
 </div>
 </div>`;
 });
