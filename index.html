@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade</title>
+<title>Dylans Arcade Fixed</title>
 
 <style>
 :root{
@@ -14,7 +14,7 @@
 --text:#f6f8ff;
 --accent:#7c5cff;
 --blue:#38c6ff;
---red:#ff4d6d;
+--red:#ff4d6e;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -31,7 +31,8 @@ overflow-y:auto;
 .sidebar{
 position:fixed;
 left:0;top:0;
-width:260px;height:100vh;
+width:260px;
+height:100vh;
 background:#0a1020;
 border-right:1px solid var(--line);
 padding:14px;
@@ -44,7 +45,7 @@ padding:14px;
 border-radius:14px;
 text-align:center;
 background:linear-gradient(135deg,var(--accent),var(--blue));
-margin-bottom:10px;
+margin-bottom:12px;
 }
 
 /* MAIN */
@@ -69,6 +70,7 @@ border:none;
 border-radius:10px;
 background:#0f1428;
 color:white;
+outline:none;
 }
 
 .addBtn{
@@ -94,20 +96,22 @@ background:var(--panel);
 border-radius:14px;
 overflow:hidden;
 border:1px solid var(--line);
+display:flex;
+flex-direction:column;
 }
 
 .thumb{
 height:140px;
+background:#0f1428;
 display:flex;
 align-items:center;
 justify-content:center;
-background:#0f1428;
 }
 
 .thumb img{
 max-width:100%;
 max-height:100%;
-display:block;
+object-fit:contain;
 }
 
 .info{
@@ -144,7 +148,8 @@ cursor:pointer;
 .player{
 display:none;
 position:fixed;
-top:0;left:0;
+top:0;
+left:0;
 width:100vw;
 height:100vh;
 background:black;
@@ -167,6 +172,7 @@ border-radius:10px;
 background:rgba(0,0,0,.6);
 color:white;
 cursor:pointer;
+z-index:10000;
 }
 
 /* PANIC BUTTON */
@@ -175,27 +181,23 @@ position:fixed;
 top:10px;
 right:10px;
 z-index:100000;
-
 padding:8px 10px;
-font-size:12px;
-
 border:none;
 border-radius:10px;
-
 background:linear-gradient(135deg,var(--accent),var(--blue));
 color:white;
 font-weight:bold;
 cursor:pointer;
-opacity:0.9;
 }
-
 </style>
 </head>
 
 <body>
 
 <!-- PANIC BUTTON (OPEN GOOGLE) -->
-<button class="panicBtn" onclick="openPanic()">📊 Panic</button>
+<button class="panicBtn" onclick="window.open('https://www.google.com','_blank')">
+📊 Panic
+</button>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
@@ -225,7 +227,7 @@ opacity:0.9;
 
 <script>
 
-/* LOAD SAVED GAMES */
+/* LOAD */
 let games = JSON.parse(localStorage.getItem("games")) || [
 {
 name:"Bloons Battles",
@@ -251,7 +253,7 @@ function save(){
 localStorage.setItem("games",JSON.stringify(games));
 }
 
-/* ADD GAME */
+/* ADD */
 function addGame(){
 
 let n=document.getElementById("name").value.trim();
@@ -272,6 +274,25 @@ document.getElementById("name").value="";
 document.getElementById("cat").value="";
 document.getElementById("url").value="";
 document.getElementById("img").value="";
+}
+
+/* PLAY */
+function play(url){
+document.getElementById("frame").src=url;
+document.getElementById("player").style.display="block";
+}
+
+/* EXIT */
+function exitGame(){
+document.getElementById("player").style.display="none";
+document.getElementById("frame").src="";
+}
+
+/* DELETE */
+function deleteGame(i){
+games.splice(i,1);
+save();
+render();
 }
 
 /* RENDER */
@@ -301,30 +322,6 @@ g.innerHTML+=`
 }
 
 render();
-
-/* PLAY */
-function play(url){
-document.getElementById("frame").src=url;
-document.getElementById("player").style.display="block";
-}
-
-/* EXIT GAME */
-function exitGame(){
-document.getElementById("player").style.display="none";
-document.getElementById("frame").src="";
-}
-
-/* DELETE */
-function deleteGame(i){
-games.splice(i,1);
-save();
-render();
-}
-
-/* PANIC MODE → OPEN GOOGLE */
-function openPanic(){
-window.open("https://www.google.com","_blank");
-}
 
 </script>
 
