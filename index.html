@@ -1,498 +1,286 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dylans Arcade V2</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dylans Arcade V4</title>
 
 <style>
 :root{
---bg:#0a0d14;
---bg2:#101626;
---panel:#171d2c;
---panel2:#1f2740;
+--bg:#070a12;
+--bg2:#0e1430;
+--panel:#151c33;
+--panel2:#1e2950;
 --line:rgba(255,255,255,.08);
 --text:#f6f8ff;
---muted:#97a3c7;
---purple:#7c5cff;
+--muted:#9aa7d1;
+--accent:#7c5cff;
 --blue:#38c6ff;
 --green:#2fd27f;
 --red:#ff5b6e;
+--gold:#ffcc66;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
-
-html,body{
-height:100%;
-overflow:hidden;
+body{
 font-family:Arial,Helvetica,sans-serif;
 background:linear-gradient(180deg,var(--bg),var(--bg2));
 color:var(--text);
-}
-
-/* LAYOUT */
-.app{
-display:grid;
-grid-template-columns:260px 1fr;
+overflow:hidden;
 height:100vh;
 }
 
-/* SIDEBAR */
+.app{display:grid;grid-template-columns:260px 1fr;height:100vh}
+
 .sidebar{
-background:#0c1119;
+background:#0b1020;
+padding:16px;
 border-right:1px solid var(--line);
-padding:18px;
 overflow-y:auto;
 }
 
 .logo{
-font-size:28px;
+font-size:22px;
 font-weight:900;
-padding:16px;
-border-radius:18px;
-text-align:center;
-background:linear-gradient(135deg,var(--purple),var(--blue));
-margin-bottom:18px;
-box-shadow:0 10px 30px rgba(0,0,0,.25);
-}
-
-.sideTitle{
-font-size:12px;
-color:var(--muted);
-text-transform:uppercase;
-letter-spacing:1px;
-margin:16px 0 8px;
-}
-
-.sideBtn{
-width:100%;
-padding:12px;
-margin-bottom:8px;
-border:none;
-border-radius:12px;
-background:var(--panel);
-color:#fff;
-font-weight:bold;
-cursor:pointer;
-text-align:left;
-transition:.15s;
-}
-
-.sideBtn:hover{
-background:var(--panel2);
-transform:translateX(4px);
-}
-
-/* MAIN */
-.main{
-display:flex;
-flex-direction:column;
-overflow:hidden;
-}
-
-/* TOPBAR */
-.topbar{
-padding:14px 18px;
-background:#0c1119;
-border-bottom:1px solid var(--line);
-display:flex;
-gap:12px;
-align-items:center;
-}
-
-.search{
-flex:1;
 padding:14px;
-border:none;
-outline:none;
 border-radius:14px;
-background:var(--panel);
-color:white;
-font-size:15px;
-}
-
-.search::placeholder{
-color:#91a0c8;
-}
-
-.topBtn{
-padding:12px 14px;
-border:none;
-border-radius:12px;
-background:var(--panel);
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-/* CONTENT */
-.content{
-padding:18px;
-overflow-y:auto;
-}
-
-/* HERO */
-.hero{
-padding:24px;
-border-radius:20px;
-background:linear-gradient(135deg,var(--purple),#4b70ff);
-margin-bottom:18px;
-box-shadow:0 10px 30px rgba(0,0,0,.25);
-}
-
-.hero h1{
-font-size:34px;
-margin-bottom:8px;
-}
-
-.hero p{
-opacity:.95;
-}
-
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
-gap:16px;
-}
-
-/* CARD */
-.card{
-background:var(--panel);
-border-radius:18px;
-overflow:hidden;
-border:1px solid var(--line);
-display:flex;
-flex-direction:column;
-transition:.15s;
-}
-
-.card:hover{
-transform:translateY(-4px);
-}
-
-.thumb{
-height:160px;
-background:#0f1320;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:10px;
-}
-
-.thumb img{
-max-width:100%;
-max-height:100%;
-object-fit:contain;
-border-radius:12px;
-display:block;
-}
-
-.info{
-padding:14px;
-}
-
-.info h3{
-font-size:19px;
-margin-bottom:8px;
-}
-
-.tags{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
+text-align:center;
+background:linear-gradient(135deg,var(--accent),var(--blue));
 margin-bottom:12px;
 }
 
-.tag{
-font-size:11px;
-padding:5px 8px;
-border-radius:999px;
-background:#26304a;
-color:#d4dcff;
-}
-
-.actions{
-display:flex;
-gap:8px;
-}
-
-.btn{
-flex:1;
-padding:11px;
-border:none;
+.profile{
+background:var(--panel);
+padding:10px;
 border-radius:12px;
-font-weight:bold;
-cursor:pointer;
+margin-bottom:10px;
+font-size:13px;
+}
+
+.sideBtn{
+width:100%;padding:10px;margin:6px 0;
+border:none;border-radius:10px;
+background:var(--panel);
+color:white;cursor:pointer;text-align:left;
+}
+
+.main{display:flex;flex-direction:column}
+
+.topbar{
+padding:12px;
+border-bottom:1px solid var(--line);
+background:#0b1020;
+display:flex;gap:10px;
+}
+
+.search{
+flex:1;padding:12px;border-radius:12px;
+border:none;background:var(--panel);
 color:white;
 }
 
-.play{
-background:linear-gradient(135deg,var(--purple),var(--blue));
+.content{padding:16px;overflow-y:auto}
+
+.hero{
+padding:16px;
+border-radius:14px;
+background:linear-gradient(135deg,var(--accent),#3b82f6);
+margin-bottom:14px;
 }
 
-.tab{
-background:#293654;
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+gap:14px;
 }
 
-.fav{
-background:#22304a;
-width:48px;
-flex:none;
-}
-
-/* PLAYER */
-.player{
-margin-top:18px;
-height:74vh;
-border-radius:18px;
+.card{
+background:var(--panel);
+border-radius:14px;
 overflow:hidden;
 border:1px solid var(--line);
-background:#000;
-display:none;
+transition:.15s;
 }
 
-.playerTop{
-padding:10px;
-background:#0f1320;
-display:flex;
-justify-content:space-between;
-align-items:center;
+.card:hover{transform:translateY(-4px)}
+
+.thumb{height:140px;display:flex;align-items:center;justify-content:center;background:#0f1428}
+.thumb img{max-width:100%;max-height:100%}
+
+.info{padding:12px}
+
+.tags{font-size:11px;color:var(--muted)}
+
+.actions{display:flex;gap:6px;margin-top:10px}
+
+button{cursor:pointer}
+
+.play{
+flex:1;padding:10px;border:none;border-radius:10px;
+background:linear-gradient(135deg,var(--accent),var(--blue));
+color:white;font-weight:bold;
 }
 
-.playerBtns{
-display:flex;
-gap:8px;
+.like{
+background:#26324d;border:none;border-radius:10px;
+padding:10px;color:white;
 }
 
-.small{
-padding:10px 12px;
-border:none;
-border-radius:10px;
-background:#24314b;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
+.badge{font-size:12px;color:#ffb3c1;margin-top:6px}
 
-.close{
-background:var(--red);
-}
+.player{display:none;height:70vh;margin-top:12px;border-radius:14px;overflow:hidden}
+iframe{width:100%;height:100%;border:none}
 
-iframe{
-width:100%;
-height:100%;
-border:none;
+.toast{
+position:fixed;bottom:20px;right:20px;
+background:#111a33;padding:10px 14px;
+border-radius:10px;border:1px solid var(--line);
+opacity:0;transform:translateY(10px);
+transition:.3s;
 }
+.toast.show{opacity:1;transform:translateY(0)}
 
-/* FOOTER */
-.footer{
-padding:14px;
-text-align:center;
-font-size:12px;
-color:var(--muted);
-}
+.leaderboard{font-size:13px;color:var(--muted);margin-bottom:10px}
 
-/* MOBILE */
-@media(max-width:950px){
-.app{
-grid-template-columns:1fr;
-}
-.sidebar{
-display:none;
-}
-.hero h1{
-font-size:26px;
-}
-.grid{
-grid-template-columns:1fr;
-}
+.confetti{
+position:fixed;top:0;left:0;pointer-events:none;
+width:100%;height:100%;
 }
 </style>
 </head>
 
 <body>
 
+<canvas class="confetti" id="confetti"></canvas>
+<div class="toast" id="toast"></div>
+
 <div class="app">
 
-<!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">🎮 Dylans Arcade</div>
+<div class="logo">🎮 Arcade V4</div>
 
-<div class="sideTitle">Categories</div>
-<button class="sideBtn" onclick="filterGames('all')">🔥 All Games</button>
-<button class="sideBtn" onclick="filterGames('strategy')">🧠 Strategy</button>
-<button class="sideBtn" onclick="filterGames('flying')">✈ Flying</button>
-<button class="sideBtn" onclick="filterGames('multiplayer')">👥 Multiplayer</button>
+<div class="profile" id="profile">Player: Guest</div>
 
-<div class="sideTitle">Extras</div>
-<button class="sideBtn" onclick="showFavorites()">⭐ Favorites</button>
-<button class="sideBtn" onclick="resetGames()">🔄 Reset</button>
+<button class="sideBtn" onclick="setName()">👤 Set Name</button>
+<button class="sideBtn" onclick="showAll()">🔥 All Games</button>
+<button class="sideBtn" onclick="showTrending()">🏆 Trending</button>
+<button class="sideBtn" onclick="showLeaderboard()">📊 Leaderboard</button>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
-<!-- TOP -->
 <div class="topbar">
-<input class="search" placeholder="Search games..." oninput="searchGames(this.value)">
-<button class="topBtn" onclick="toggleTheme()">🌙</button>
+<input class="search" placeholder="Search games..." oninput="search(this.value)">
 </div>
 
-<!-- CONTENT -->
 <div class="content">
 
 <div class="hero">
-<h1>Dylans Arcade V2</h1>
-<p>Play browser games instantly. Search, fullscreen, favorites, categories and more.</p>
+<h2>Dylans Arcade V4</h2>
+<p>🔥 likes • leaderboard • profiles • animations • trending AI system</p>
 </div>
 
-<div class="grid" id="grid">
-
-<!-- BLOONS -->
-<div class="card game" data-name="bloons battles monkey strategy multiplayer" data-cat="strategy multiplayer">
-<div class="thumb">
-<img src="https://cdn.kiz10.com/upload/thumbnails/21132/1757453520_bloons-battles.webp">
-</div>
-<div class="info">
-<h3>Bloons Battles</h3>
-<div class="tags">
-<div class="tag">Strategy</div>
-<div class="tag">PvP</div>
-</div>
-<div class="actions">
-<button class="btn play" onclick="playGame('https://kiz10.com/embed-play/bloons-battles/?img=21132/1757453520_bloons-battles.webp','Bloons Battles')">Play</button>
-<button class="btn tab" onclick="window.open('https://kiz10.com/embed-play/bloons-battles/?img=21132/1757453520_bloons-battles.webp')">Tab</button>
-<button class="btn fav" onclick="favGame('Bloons Battles')">★</button>
-</div>
-</div>
-</div>
-
-<!-- PAPER FLIGHT -->
-<div class="card game" data-name="paper flight flying plane arcade" data-cat="flying">
-<div class="thumb">
-<img src="https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper-flight.jpeg">
-</div>
-<div class="info">
-<h3>Paper Flight</h3>
-<div class="tags">
-<div class="tag">Flying</div>
-<div class="tag">Arcade</div>
-</div>
-<div class="actions">
-<button class="btn play" onclick="playGame('https://www.rocketgames.io/embed/paper-flight','Paper Flight')">Play</button>
-<button class="btn tab" onclick="window.open('https://www.rocketgames.io/embed/paper-flight')">Tab</button>
-<button class="btn fav" onclick="favGame('Paper Flight')">★</button>
-</div>
-</div>
-</div>
-
-</div>
-
-<!-- PLAYER -->
-<div class="player" id="player">
-<div class="playerTop">
-<b id="title">Game</b>
-
-<div class="playerBtns">
-<button class="small" onclick="reloadGame()">⟳</button>
-<button class="small" onclick="fullGame()">⛶</button>
-<button class="small close" onclick="closeGame()">✕</button>
-</div>
-</div>
-
-<iframe id="frame" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
-</div>
-
-<div class="footer">
-Dylans Arcade V2 • Free HTML Website Ready
-</div>
+<div class="leaderboard" id="board"></div>
+<div class="grid" id="grid"></div>
+<div class="player" id="player"><iframe id="frame"></iframe></div>
 
 </div>
 </div>
 </div>
 
 <script>
-const frame=document.getElementById("frame");
-const player=document.getElementById("player");
-const title=document.getElementById("title");
 
-let currentURL="";
+let games=[
+{name:"Bloons Battles",cat:"strategy",url:"https://kiz10.com/embed-play/bloons-battles/",img:"https://cdn.kiz10.com/upload/thumbnails/21132/1757453520_bloons-battles.webp"},
+{name:"Paper Flight",cat:"flying",url:"https://www.rocketgames.io/embed/paper-flight",img:"https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper-flight.jpeg"},
+{name:"Shell Shockers",cat:"multiplayer",url:"https://shellshock.io/",img:"https://shellshock.io/img/favicon.png"}
+];
 
-/* PLAY */
-function playGame(url,name){
-currentURL=url;
-title.innerText=name;
-frame.src=url;
-player.style.display="block";
-player.scrollIntoView({behavior:"smooth"});
+let likes=JSON.parse(localStorage.getItem("likes")||"{}")
+let playerName=localStorage.getItem("name")||"Guest"
+
+function toast(msg){
+let t=document.getElementById("toast")
+t.innerText=msg
+t.classList.add("show")
+setTimeout(()=>t.classList.remove("show"),1500)
 }
 
-/* CLOSE */
-function closeGame(){
-frame.src="about:blank";
-player.style.display="none";
+function save(){localStorage.setItem("likes",JSON.stringify(likes))}
+
+function setName(){
+let n=prompt("Enter name:")
+if(!n) return
+playerName=n
+localStorage.setItem("name",n)
+document.getElementById("profile").innerText="Player: "+n
+toast("Name set!")
 }
 
-/* RELOAD */
-function reloadGame(){
-if(currentURL) frame.src=currentURL;
+function render(list=games){
+let g=document.getElementById("grid")
+g.innerHTML=""
+list.forEach(x=>{
+let l=likes[x.name]||0
+
+g.innerHTML+=`
+<div class='card'>
+<div class='thumb'><img src='${x.img}'></div>
+<div class='info'>
+<h3>${x.name}</h3>
+<div class='tags'>${x.cat}</div>
+<div class='badge'>❤️ ${l}</div>
+<div class='actions'>
+<button class='play' onclick="play('${x.url}')">Play</button>
+<button class='like' onclick="like('${x.name}')">❤️</button>
+</div>
+</div>
+</div>`
+})
 }
 
-/* FULLSCREEN FIXED */
-function fullGame(){
-if(frame.requestFullscreen){
-frame.requestFullscreen();
-}else if(frame.webkitRequestFullscreen){
-frame.webkitRequestFullscreen();
-}else if(frame.msRequestFullscreen){
-frame.msRequestFullscreen();
-}
+function like(name){
+likes[name]=(likes[name]||0)+1
+save()
+render()
+toast("+1 Like ❤️")
+confetti()
 }
 
-/* SEARCH */
-function searchGames(q){
-q=q.toLowerCase();
-document.querySelectorAll(".game").forEach(g=>{
-g.style.display=g.dataset.name.includes(q)?"flex":"none";
-});
+function play(url){
+document.getElementById("frame").src=url
+document.getElementById("player").style.display="block"
 }
 
-/* FILTER */
-function filterGames(cat){
-document.querySelectorAll(".game").forEach(g=>{
-if(cat==="all") g.style.display="flex";
-else g.style.display=g.dataset.cat.includes(cat)?"flex":"none";
-});
+function search(q){q=q.toLowerCase();render(games.filter(g=>g.name.toLowerCase().includes(q)))}
+
+function showAll(){render(games)}
+
+function showTrending(){render([...games].sort((a,b)=>(likes[b.name]||0)-(likes[a.name]||0)).slice(0,5))}
+
+function showLeaderboard(){
+let b=document.getElementById("board")
+let s=[...games].sort((a,b)=>(likes[b.name]||0)-(likes[a.name]||0))
+b.innerHTML="🏆 Leaderboard<br>"
+s.forEach((g,i)=>b.innerHTML+=`${i+1}. ${g.name} - ${likes[g.name]||0}<br>`)
 }
 
-/* RESET */
-function resetGames(){
-document.querySelectorAll(".game").forEach(g=>g.style.display="flex");
+// simple confetti
+function confetti(){
+let c=document.getElementById("confetti")
+let ctx=c.getContext("2d")
+c.width=window.innerWidth
+c.height=window.innerHeight
+for(let i=0;i<60;i++){
+ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`
+ctx.fillRect(Math.random()*c.width,Math.random()*c.height,4,4)
+}
+setTimeout(()=>ctx.clearRect(0,0,c.width,c.height),400)
 }
 
-/* FAVORITES */
-function favGame(name){
-let favs=JSON.parse(localStorage.getItem("dylanFavs")||"[]");
-if(!favs.includes(name)) favs.push(name);
-localStorage.setItem("dylanFavs",JSON.stringify(favs));
-alert(name+" added to favorites!");
-}
+render()
+document.getElementById("profile").innerText="Player: "+playerName
 
-function showFavorites(){
-let favs=JSON.parse(localStorage.getItem("dylanFavs")||"[]");
-document.querySelectorAll(".game").forEach(g=>{
-g.style.display=favs.some(f=>g.dataset.name.includes(f.toLowerCase()))?"flex":"none";
-});
-}
-
-/* THEME */
-function toggleTheme(){
-document.body.style.filter=
-document.body.style.filter==="invert(1) hue-rotate(180deg)"
-? ""
-: "invert(1) hue-rotate(180deg)";
-}
 </script>
 
 </body>
