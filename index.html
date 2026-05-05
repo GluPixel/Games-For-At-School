@@ -30,9 +30,17 @@ height:100vh;
 overflow:hidden;
 }
 
-.app{display:grid;grid-template-columns:260px 1fr;height:100vh}
+.app{
+display:block;
+height:100vh;
+}
 
 .sidebar{
+position:fixed;
+top:0;
+left:0;
+width:260px;
+height:100vh;
 background:#0a1020;
 padding:14px;
 border-right:1px solid var(--line);
