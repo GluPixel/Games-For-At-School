@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade FIXED FINAL</title>
+<title>Dylans Arcade V6</title>
 
 <style>
 :root{
@@ -28,7 +28,6 @@ background:linear-gradient(180deg,var(--bg),var(--bg2));
 color:var(--text);
 min-height:100vh;
 overflow-y:auto;
-overflow-x:hidden;
 }
 
 /* SIDEBAR */
@@ -54,18 +53,10 @@ background:linear-gradient(135deg,var(--accent),var(--blue));
 margin-bottom:10px;
 }
 
-.profile{
-background:var(--panel);
-padding:10px;
-border-radius:12px;
-font-size:12px;
-margin-bottom:10px;
-}
-
 .sideBtn{
 width:100%;
 padding:10px;
-margin:5px 0;
+margin:6px 0;
 border:none;
 border-radius:10px;
 background:var(--panel);
@@ -89,6 +80,35 @@ background:linear-gradient(135deg,var(--accent),#3b82f6);
 margin-bottom:14px;
 }
 
+/* ADD FORM */
+.addBox{
+background:var(--panel);
+padding:12px;
+border-radius:14px;
+margin-bottom:14px;
+display:grid;
+gap:8px;
+}
+
+.addBox input{
+padding:10px;
+border-radius:10px;
+border:none;
+outline:none;
+background:#0f1428;
+color:white;
+}
+
+.addBtn{
+padding:10px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,var(--accent),var(--blue));
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
 /* GRID */
 .grid{
 display:grid;
@@ -96,17 +116,32 @@ grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
 gap:12px;
 }
 
-/* CARD */
+/* 🎬 ANIMATED CARD */
 .card{
 background:var(--panel);
 border-radius:14px;
 overflow:hidden;
 border:1px solid var(--line);
-transition:.15s;
+transition:transform .25s ease, box-shadow .25s ease, opacity .3s ease;
+animation:pop .35s ease;
+opacity:0;
+animation-fill-mode:forwards;
+}
+
+@keyframes pop{
+from{
+transform:scale(.9);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
 }
 
 .card:hover{
-transform:translateY(-4px);
+transform:translateY(-6px) scale(1.02);
+box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 
 .thumb{
@@ -184,11 +219,8 @@ border:none;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">🎮 Arcade</div>
+<div class="logo">🎮 Arcade V6</div>
 
-<div class="profile" id="profile">Player: Guest</div>
-
-<button class="sideBtn" onclick="setName()">👤 Set Name</button>
 <button class="sideBtn" onclick="showAll()">🔥 All Games</button>
 <button class="sideBtn" onclick="showTrending()">🏆 Trending</button>
 </div>
@@ -197,13 +229,22 @@ border:none;
 <div class="main">
 
 <div class="hero">
-<h2>Dylans Arcade (FINAL FIXED)</h2>
-<p>Everything stable • scrolling fixed • images fixed</p>
+<h2>Dylans Arcade V6</h2>
+<p>Animated cards + add your own games</p>
+</div>
+
+<!-- ADD GAME SYSTEM -->
+<div class="addBox">
+<input id="gname" placeholder="Game Name">
+<input id="gcat" placeholder="Category">
+<input id="gurl" placeholder="Game URL">
+<input id="gimg" placeholder="Image URL">
+<button class="addBtn" onclick="addGame()">➕ Add Game</button>
 </div>
 
 <div class="grid" id="grid"></div>
 
-<div class="player" id="player">
+<div class="player">
 <iframe id="frame"></iframe>
 </div>
 
@@ -211,38 +252,37 @@ border:none;
 
 <script>
 
-let games=[
-{
-name:"Bloons Battles",
-cat:"strategy",
-url:"https://kiz10.com/embed-play/bloons-battles/",
-img:"https://cdn.kiz10.com/upload/thumbnails/21132/1757453520_bloons-battles.webp"
-},
-{
-name:"Paper Flight",
-cat:"flying",
-url:"https://www.rocketgames.io/embed/paper-flight",
-img:"https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper-flight.jpeg"
-},
-{
-name:"Shell Shockers",
-cat:"multiplayer",
-url:"https://sites.google.com/bluewizard.com/play-shell/home",
-img:"https://shellshock.io/img/icons/android-chrome-512x512.png"
-}
+let games = JSON.parse(localStorage.getItem("games") || "null") || [
+{name:"Bloons Battles",cat:"strategy",url:"https://kiz10.com/embed-play/bloons-battles/",img:"https://cdn.kiz10.com/upload/thumbnails/21132/1757453520_bloons-battles.webp"},
+{name:"Paper Flight",cat:"flying",url:"https://www.rocketgames.io/embed/paper-flight",img:"https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper-flight.jpeg"},
+{name:"Shell Shockers",cat:"multiplayer",url:"https://sites.google.com/bluewizard.com/play-shell/home",img:"https://shellshock.io/img/icons/android-chrome-512x512.png"}
 ];
 
-let likes=JSON.parse(localStorage.getItem("likes")||"{}");
-let playerName=localStorage.getItem("name")||"Guest";
+let likes = JSON.parse(localStorage.getItem("likes") || "{}");
 
-function setName(){
-let n=prompt("Enter name:");
-if(!n)return;
-playerName=n;
-localStorage.setItem("name",n);
-document.getElementById("profile").innerText="Player: "+n;
+/* SAVE GAMES */
+function saveGames(){
+localStorage.setItem("games",JSON.stringify(games));
 }
 
+/* ADD GAME */
+function addGame(){
+let n=document.getElementById("gname").value;
+let c=document.getElementById("gcat").value;
+let u=document.getElementById("gurl").value;
+let i=document.getElementById("gimg").value;
+
+if(!n||!u||!i){
+alert("Fill all fields");
+return;
+}
+
+games.push({name:n,cat:c,url:u,img:i});
+saveGames();
+render();
+}
+
+/* RENDER */
 function render(list=games){
 let g=document.getElementById("grid");
 g.innerHTML="";
@@ -271,25 +311,28 @@ g.innerHTML+=`
 });
 }
 
+/* LIKE */
 function like(name){
 likes[name]=(likes[name]||0)+1;
 localStorage.setItem("likes",JSON.stringify(likes));
 render();
 }
 
+/* PLAY */
 function play(url){
 document.getElementById("frame").src=url;
-document.getElementById("player").style.display="block";
+document.querySelector(".player").style.display="block";
 }
 
+/* FILTERS */
 function showAll(){render(games);}
 
 function showTrending(){
 render([...games].sort((a,b)=>(likes[b.name]||0)-(likes[a.name]||0)));
 }
 
+/* INIT */
 render();
-document.getElementById("profile").innerText="Player: "+playerName;
 
 </script>
 
