@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade SAFE V5</title>
+<title>Dylans Arcade FIXED FINAL</title>
 
 <style>
 :root{
@@ -27,13 +27,12 @@ font-family:Arial,Helvetica,sans-serif;
 background:linear-gradient(180deg,var(--bg),var(--bg2));
 color:var(--text);
 
-/* IMPORTANT: allow normal page scroll */
-overflow-y:auto;
-overflow-x:hidden;
+/* REAL SCROLL ONLY */
 min-height:100vh;
+overflow-y:auto;
 }
 
-/* FIXED SIDEBAR (does NOT affect scrolling) */
+/* FIXED SIDEBAR */
 .sidebar{
 position:fixed;
 top:0;
@@ -76,13 +75,13 @@ cursor:pointer;
 text-align:left;
 }
 
-/* MAIN PAGE CONTENT (NORMAL FLOW — THIS FIXES EVERYTHING) */
+/* 🔥 FIX: FULL WIDTH MAIN AREA */
 .main{
 margin-left:260px;
-padding:14px;
+width:calc(100% - 260px);
+padding:16px;
 }
 
-/* HERO */
 .hero{
 padding:16px;
 border-radius:14px;
@@ -90,7 +89,6 @@ background:linear-gradient(135deg,var(--accent),#3b82f6);
 margin-bottom:14px;
 }
 
-/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
@@ -185,7 +183,7 @@ border:none;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">🎮 Arcade SAFE</div>
+<div class="logo">🎮 Arcade FIX</div>
 <div class="profile" id="profile">Player: Guest</div>
 
 <button class="sideBtn" onclick="setName()">👤 Name</button>
@@ -193,17 +191,17 @@ border:none;
 <button class="sideBtn" onclick="showTrending()">🏆 Trending</button>
 </div>
 
-<!-- MAIN PAGE -->
+<!-- MAIN CONTENT -->
 <div class="main">
 
 <div class="hero">
-<h2>Dylans Arcade SAFE MODE</h2>
-<p>Fixed scrolling — no clipping — no broken layout</p>
+<h2>Dylans Arcade (FULL FIX)</h2>
+<p>No squish • no broken scroll • clean layout</p>
 </div>
 
 <div class="grid" id="grid"></div>
 
-<div class="player" id="player">
+<div class="player">
 <iframe id="frame"></iframe>
 </div>
 
@@ -221,7 +219,7 @@ let likes=JSON.parse(localStorage.getItem("likes")||"{}");
 let playerName=localStorage.getItem("name")||"Guest";
 
 function setName(){
-let n=prompt("Name?");
+let n=prompt("Enter name:");
 if(!n)return;
 playerName=n;
 localStorage.setItem("name",n);
@@ -259,7 +257,7 @@ render();
 
 function play(url){
 document.getElementById("frame").src=url;
-document.getElementById("player").style.display="block";
+document.querySelector(".player").style.display="block";
 }
 
 function showAll(){render(games);}
