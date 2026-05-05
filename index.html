@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V10</title>
+<title>Dylans Arcade V11</title>
 
 <style>
 :root{
@@ -113,7 +113,6 @@ max-height:100%;
 padding:12px;
 }
 
-/* BUTTONS */
 .actions{
 display:flex;
 gap:6px;
@@ -159,40 +158,37 @@ overflow:hidden;
 position:relative;
 }
 
-.playerTop{
-position:absolute;
-top:0;
-left:0;
-right:0;
-z-index:10;
-display:flex;
-justify-content:space-between;
-padding:10px;
-background:rgba(0,0,0,.5);
-backdrop-filter:blur(6px);
-}
-
-.playerTop button{
-border:none;
-padding:8px 10px;
-border-radius:8px;
-cursor:pointer;
-background:#222c4a;
-color:white;
-}
-
 iframe{
 width:100%;
 height:100%;
 border:none;
 }
+
+/* OLD STYLE FULLSCREEN BUTTON */
+.fullscreenBtn{
+position:absolute;
+bottom:10px;
+right:10px;
+z-index:10;
+
+padding:10px 14px;
+border:none;
+border-radius:12px;
+
+background:rgba(0,0,0,.6);
+backdrop-filter:blur(6px);
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="sidebar">
-<div class="logo">🎮 Arcade V10</div>
+<div class="logo">🎮 Arcade V11</div>
 </div>
 
 <div class="main">
@@ -211,12 +207,10 @@ border:none;
 <!-- PLAYER -->
 <div class="player" id="player">
 
-<div class="playerTop">
-<button onclick="exitGame()">✖ Exit</button>
-<button onclick="toggleFullscreen()">⛶ Fullscreen</button>
-</div>
-
 <iframe id="frame" allow="fullscreen"></iframe>
+
+<!-- OLD STYLE BUTTON -->
+<button class="fullscreenBtn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
 
 </div>
 
@@ -278,13 +272,7 @@ document.getElementById("frame").src=url;
 document.getElementById("player").style.display="block";
 }
 
-/* EXIT */
-function exitGame(){
-document.getElementById("frame").src="";
-document.getElementById("player").style.display="none";
-}
-
-/* FULLSCREEN (FIXED) */
+/* EXIT FULLSCREEN */
 function toggleFullscreen(){
 let el=document.getElementById("player");
 
