@@ -10,7 +10,8 @@
 --bg:#060812;
 --bg2:#0d1230;
 --panel:#141b33;
---text:#eaf0ff;
+--line:rgba(255,255,255,.08);
+--text:#f6f8ff;
 --accent:#7c5cff;
 --blue:#38c6ff;
 --red:#ff4d6d;
@@ -32,9 +33,21 @@ position:fixed;
 left:0;top:0;
 width:260px;height:100vh;
 background:#0a1020;
+border-right:1px solid var(--line);
 padding:14px;
 }
 
+.logo{
+font-size:20px;
+font-weight:900;
+padding:14px;
+border-radius:14px;
+text-align:center;
+background:linear-gradient(135deg,var(--accent),var(--blue));
+margin-bottom:10px;
+}
+
+/* MAIN */
 .main{
 margin-left:260px;
 padding:16px;
@@ -75,10 +88,56 @@ grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
 gap:12px;
 }
 
+/* CARD */
 .card{
 background:var(--panel);
-padding:12px;
 border-radius:14px;
+overflow:hidden;
+border:1px solid var(--line);
+}
+
+.thumb{
+height:140px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#0f1428;
+}
+
+.thumb img{
+max-width:100%;
+max-height:100%;
+display:block;
+}
+
+.info{
+padding:12px;
+}
+
+.actions{
+display:flex;
+gap:6px;
+margin-top:10px;
+}
+
+.play{
+flex:1;
+padding:10px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,var(--accent),var(--blue));
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.delete{
+padding:10px;
+border:none;
+border-radius:10px;
+background:var(--red);
+color:white;
+cursor:pointer;
 }
 
 /* PLAYER */
@@ -89,7 +148,7 @@ top:0;left:0;
 width:100vw;
 height:100vh;
 background:black;
-z-index:50;
+z-index:9999;
 }
 
 iframe{
@@ -102,7 +161,6 @@ border:none;
 position:absolute;
 top:10px;
 right:10px;
-z-index:60;
 padding:10px 14px;
 border:none;
 border-radius:10px;
@@ -111,62 +169,7 @@ color:white;
 cursor:pointer;
 }
 
-/* =========================
-   PANIC MODE OVERLAY
-========================= */
-
-.panic{
-display:none;
-position:fixed;
-top:0;left:0;
-width:100vw;
-height:100vh;
-background:#0f172a;
-z-index:99999;
-}
-
-.panicHeader{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px 14px;
-background:#111c33;
-border-bottom:1px solid rgba(255,255,255,.1);
-}
-
-.sheet{
-display:grid;
-grid-template-columns:repeat(10,1fr);
-gap:2px;
-padding:16px;
-}
-
-.cell{
-background:#111827;
-border:1px solid rgba(255,255,255,.05);
-min-height:32px;
-font-size:11px;
-padding:6px;
-}
-
-.tab{
-background:#1f2937;
-padding:5px 9px;
-border-radius:7px;
-font-size:11px;
-margin-left:6px;
-}
-
-.close{
-padding:8px 12px;
-border:none;
-border-radius:8px;
-background:#ef4444;
-color:white;
-cursor:pointer;
-}
-
-/* FLOATING BUTTON */
+/* PANIC BUTTON */
 .panicBtn{
 position:fixed;
 top:10px;
@@ -183,20 +186,20 @@ background:linear-gradient(135deg,var(--accent),var(--blue));
 color:white;
 font-weight:bold;
 cursor:pointer;
-
-opacity:0.85;
+opacity:0.9;
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- ALWAYS VISIBLE PANIC BUTTON -->
+<!-- PANIC BUTTON (OPEN GOOGLE) -->
 <button class="panicBtn" onclick="openPanic()">📊 Panic</button>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<h3>🎮 Arcade</h3>
+<div class="logo">🎮 Arcade</div>
 </div>
 
 <!-- MAIN -->
@@ -220,31 +223,28 @@ opacity:0.85;
 <iframe id="frame"></iframe>
 </div>
 
-<!-- PANIC MODE -->
-<div class="panic" id="panic">
-
-<div class="panicHeader">
-<div>
-📊 Spreadsheet Mode
-<span class="tab">File</span>
-<span class="tab">Edit</span>
-<span class="tab">View</span>
-</div>
-
-<button class="close" onclick="exitPanic()">Exit</button>
-</div>
-
-<div class="sheet" id="sheet"></div>
-
-</div>
-
 <script>
 
 /* LOAD SAVED GAMES */
 let games = JSON.parse(localStorage.getItem("games")) || [
-{name:"Bloons",url:"https://kiz10.com/embed-play/bloons-battles/"},
-{name:"Paper Flight",url:"https://www.rocketgames.io/embed/paper-flight"},
-{name:"Minecraft",url:"https://mcraft.fun"}
+{
+name:"Bloons Battles",
+cat:"strategy",
+url:"https://kiz10.com/embed-play/bloons-battles/",
+img:"https://cdn.kiz10.com/upload/thumbnails/21132/1757453520_bloons-battles.webp"
+},
+{
+name:"Paper Flight",
+cat:"flying",
+url:"https://www.rocketgames.io/embed/paper-flight",
+img:"https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper-flight.jpeg"
+},
+{
+name:"Minecraft",
+cat:"sandbox",
+url:"https://mcraft.fun",
+img:"https://tse4.mm.bing.net/th/id/OIP.JzuDWurtzG4ylwJNGwKbHQHaEK?pid=Api&P=0&h=180"
+}
 ];
 
 function save(){
@@ -267,6 +267,11 @@ return;
 games.push({name:n,cat:c,url:u,img:i});
 save();
 render();
+
+document.getElementById("name").value="";
+document.getElementById("cat").value="";
+document.getElementById("url").value="";
+document.getElementById("img").value="";
 }
 
 /* RENDER */
@@ -277,9 +282,20 @@ g.innerHTML="";
 games.forEach((x,i)=>{
 g.innerHTML+=`
 <div class="card">
-<h4>${x.name}</h4>
-<button onclick="play('${x.url}')">Play</button>
-<button onclick="games.splice(${i},1);save();render()">🗑 Delete</button>
+<div class="thumb">
+<img src="${x.img}">
+</div>
+
+<div class="info">
+<h3>${x.name}</h3>
+<div>${x.cat}</div>
+
+<div class="actions">
+<button class="play" onclick="play('${x.url}')">Play</button>
+<button class="delete" onclick="deleteGame(${i})">🗑</button>
+</div>
+
+</div>
 </div>`;
 });
 }
@@ -298,21 +314,16 @@ document.getElementById("player").style.display="none";
 document.getElementById("frame").src="";
 }
 
-/* PANIC MODE */
+/* DELETE */
+function deleteGame(i){
+games.splice(i,1);
+save();
+render();
+}
+
+/* PANIC MODE → OPEN GOOGLE */
 function openPanic(){
-
-document.getElementById("panic").style.display="block";
-
-let s=document.getElementById("sheet");
-s.innerHTML="";
-
-for(let i=0;i<250;i++){
-s.innerHTML+=`<div class="cell">${Math.floor(Math.random()*9999)}</div>`;
-}
-}
-
-function exitPanic(){
-document.getElementById("panic").style.display="none";
+window.open("https://www.google.com","_blank");
 }
 
 </script>
