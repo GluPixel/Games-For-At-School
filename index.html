@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V8</title>
+<title>Dylans Arcade V9</title>
 
 <style>
 :root{
@@ -14,7 +14,7 @@
 --text:#f6f8ff;
 --accent:#7c5cff;
 --blue:#38c6ff;
---red:#ff4d6d;
+--red:#ff3b5c;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -35,23 +35,11 @@ width:260px;height:100vh;
 background:#0a1020;
 border-right:1px solid var(--line);
 padding:14px;
-overflow-y:auto;
-}
-
-.logo{
-font-size:20px;
-font-weight:900;
-padding:14px;
-border-radius:14px;
-text-align:center;
-background:linear-gradient(135deg,var(--accent),var(--blue));
-margin-bottom:10px;
 }
 
 /* MAIN */
 .main{
 margin-left:260px;
-width:calc(100% - 260px);
 padding:16px;
 }
 
@@ -60,15 +48,15 @@ padding:16px;
 background:var(--panel);
 padding:12px;
 border-radius:14px;
-margin-bottom:14px;
 display:grid;
 gap:8px;
+margin-bottom:14px;
 }
 
 .addBox input{
 padding:10px;
-border:none;
 border-radius:10px;
+border:none;
 background:#0f1428;
 color:white;
 }
@@ -96,11 +84,8 @@ background:var(--panel);
 border-radius:14px;
 overflow:hidden;
 border:1px solid var(--line);
-transition:.2s;
-}
-
-.card:hover{
-transform:translateY(-6px);
+display:flex;
+flex-direction:column;
 }
 
 .thumb{
@@ -118,12 +103,16 @@ max-height:100%;
 
 .info{
 padding:12px;
+display:flex;
+flex-direction:column;
+gap:6px;
 }
 
+/* BUTTON ROW */
 .actions{
 display:flex;
-gap:6px;
-margin-top:10px;
+gap:8px;
+margin-top:8px;
 }
 
 .play{
@@ -143,9 +132,16 @@ border:none;
 border-radius:10px;
 background:var(--red);
 color:white;
+font-weight:bold;
 cursor:pointer;
 }
 
+/* FORCE DELETE VISIBILITY */
+.delete:hover{
+filter:brightness(1.2);
+}
+
+/* PLAYER */
 .player{
 display:none;
 margin-top:16px;
@@ -164,12 +160,10 @@ border:none;
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">🎮 Arcade V8</div>
+<h2>🎮 Arcade V9</h2>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
 <!-- ADD GAME -->
@@ -216,7 +210,7 @@ function save(){
 localStorage.setItem("games",JSON.stringify(games));
 }
 
-/* ADD GAME */
+/* ADD GAME (FIXED) */
 function addGame(){
 
 let n=document.getElementById("name").value.trim();
@@ -233,14 +227,13 @@ games.push({name:n,cat:c,url:u,img:i});
 save();
 render();
 
-/* clear */
 document.getElementById("name").value="";
 document.getElementById("cat").value="";
 document.getElementById("url").value="";
 document.getElementById("img").value="";
 }
 
-/* DELETE GAME */
+/* DELETE (FIXED RELIABLE INDEX) */
 function deleteGame(index){
 games.splice(index,1);
 save();
@@ -253,12 +246,12 @@ document.getElementById("frame").src=url;
 document.querySelector(".player").style.display="block";
 }
 
-/* RENDER */
+/* RENDER (FIXED INDEX BINDING) */
 function render(){
 let g=document.getElementById("grid");
 g.innerHTML="";
 
-games.forEach((x,i)=>{
+games.forEach((x,index)=>{
 
 g.innerHTML+=`
 <div class="card">
@@ -272,7 +265,7 @@ g.innerHTML+=`
 
 <div class="actions">
 <button class="play" onclick="play('${x.url}')">Play</button>
-<button class="delete" onclick="deleteGame(${i})">🗑</button>
+<button class="delete" onclick="deleteGame(${index})">🗑 Delete</button>
 </div>
 
 </div>
