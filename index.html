@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V17</title>
+<title>Dylans Arcade V18</title>
 
 <style>
 :root{
@@ -83,7 +83,10 @@ color:white;
 cursor:pointer;
 }
 
-/* PANIC MODE */
+/* =========================
+   PANIC MODE OVERLAY
+========================= */
+
 .panic{
 display:none;
 position:fixed;
@@ -101,6 +104,7 @@ align-items:center;
 padding:10px 14px;
 background:#111c33;
 border-bottom:1px solid rgba(255,255,255,.1);
+font-size:14px;
 }
 
 .sheet{
@@ -120,9 +124,9 @@ padding:6px;
 
 .tab{
 background:#1f2937;
-padding:6px 10px;
-border-radius:8px;
-font-size:12px;
+padding:5px 9px;
+border-radius:7px;
+font-size:11px;
 margin-left:6px;
 }
 
@@ -134,14 +138,47 @@ background:#ef4444;
 color:white;
 cursor:pointer;
 }
+
+/* =========================
+   FLOATING PANIC BUTTON
+========================= */
+
+.panicBtn{
+position:fixed;
+top:12px;
+right:12px;
+z-index:100000;
+
+padding:8px 10px;
+font-size:12px;
+
+border:none;
+border-radius:10px;
+
+background:linear-gradient(135deg,var(--accent),var(--blue));
+color:white;
+font-weight:bold;
+
+cursor:pointer;
+opacity:0.85;
+transition:0.2s;
+}
+
+.panicBtn:hover{
+opacity:1;
+transform:scale(1.05);
+}
 </style>
 </head>
 
 <body>
 
+<!-- FLOATING BUTTON -->
+<button class="panicBtn" onclick="openPanic()">📊 Panic</button>
+
 <!-- ARCADE -->
 <div class="sidebar">
-<h3>🎮 Arcade V17</h3>
+<h3>🎮 Arcade V18</h3>
 </div>
 
 <div class="main">
@@ -208,9 +245,8 @@ document.getElementById("player").style.display="none";
 document.getElementById("frame").src="";
 }
 
-/* PANIC MODE OPEN */
+/* PANIC OPEN */
 function openPanic(){
-
 document.getElementById("panic").style.display="block";
 
 let s=document.getElementById("sheet");
@@ -221,21 +257,10 @@ s.innerHTML+=`<div class="cell">${Math.floor(Math.random()*9999)}</div>`;
 }
 }
 
-/* PANIC MODE EXIT */
+/* PANIC EXIT */
 function exitPanic(){
 document.getElementById("panic").style.display="none";
 }
-
-/* HOTKEYS */
-document.addEventListener("keydown",function(e){
-
-// Ctrl + Alt + 1 → PANIC MODE
-if(e.ctrlKey && e.altKey && e.code==="Digit1"){
-e.preventDefault();
-openPanic();
-}
-
-});
 
 </script>
 
