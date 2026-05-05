@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V12</title>
+<title>Dylans Arcade V13</title>
 
 <style>
 :root{
@@ -35,6 +35,7 @@ width:260px;height:100vh;
 background:#0a1020;
 border-right:1px solid var(--line);
 padding:14px;
+z-index:2;
 }
 
 .logo{
@@ -51,6 +52,7 @@ margin-bottom:10px;
 .main{
 margin-left:260px;
 padding:16px;
+z-index:1;
 }
 
 /* ADD BOX */
@@ -139,7 +141,7 @@ color:white;
 cursor:pointer;
 }
 
-/* PLAYER (FULL SCREEN MODE) */
+/* PLAYER FULLSCREEN */
 .player{
 display:none;
 position:fixed;
@@ -156,36 +158,35 @@ height:100%;
 border:none;
 }
 
-/* EXIT BUTTON IN FULLSCREEN */
+/* EXIT BUTTON */
 .exitBtn{
 position:absolute;
 top:10px;
 right:10px;
-z-index:10000;
-
 padding:10px 14px;
 border:none;
 border-radius:10px;
-
 background:rgba(0,0,0,.6);
 color:white;
-font-weight:bold;
 cursor:pointer;
+z-index:10000;
+}
+
+/* BOSS KEY MODE */
+.hidden{
+display:none !important;
 }
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-<div class="logo">🎮 Arcade V12</div>
+<div class="logo">🎮 Arcade V13</div>
 </div>
 
-<!-- MAIN -->
 <div class="main" id="main">
 
-<!-- ADD GAME -->
 <div class="addBox" id="addBox">
 <input id="name" placeholder="Game Name">
 <input id="cat" placeholder="Category">
@@ -198,7 +199,7 @@ cursor:pointer;
 
 </div>
 
-<!-- FULLSCREEN PLAYER -->
+<!-- PLAYER -->
 <div class="player" id="player">
 <button class="exitBtn" onclick="exitGame()">✖ Exit</button>
 <iframe id="frame" allow="fullscreen"></iframe>
@@ -254,27 +255,15 @@ document.getElementById("url").value="";
 document.getElementById("img").value="";
 }
 
-/* PLAY (ENTER FULLSCREEN MODE) */
+/* PLAY */
 function play(url){
-
 document.getElementById("frame").src=url;
-
-/* HIDE EVERYTHING */
-document.getElementById("sidebar").style.display="none";
-document.getElementById("main").style.display="none";
-
-/* SHOW PLAYER */
 document.getElementById("player").style.display="block";
 }
 
-/* EXIT FULLSCREEN MODE */
+/* EXIT */
 function exitGame(){
-
 document.getElementById("frame").src="";
-
-/* RESTORE UI */
-document.getElementById("sidebar").style.display="block";
-document.getElementById("main").style.display="block";
 document.getElementById("player").style.display="none";
 }
 
@@ -287,7 +276,6 @@ render();
 
 /* RENDER */
 function render(){
-
 let g=document.getElementById("grid");
 g.innerHTML="";
 
@@ -314,6 +302,23 @@ g.innerHTML+=`
 }
 
 render();
+
+/* HOTKEYS */
+document.addEventListener("keydown", function(e){
+
+// Ctrl + Shift + 1 → Google
+if(e.ctrlKey && e.shiftKey && e.key === "1"){
+window.open("https://www.google.com","_blank");
+}
+
+// Ctrl + Shift + 3 → Boss Key (hide everything)
+if(e.ctrlKey && e.shiftKey && e.key === "3"){
+document.getElementById("sidebar").classList.toggle("hidden");
+document.getElementById("main").classList.toggle("hidden");
+document.getElementById("player").classList.toggle("hidden");
+}
+
+});
 
 </script>
 
