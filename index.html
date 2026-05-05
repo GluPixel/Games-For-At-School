@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V18</title>
+<title>Dylans Arcade</title>
 
 <style>
 :root{
@@ -38,6 +38,34 @@ padding:14px;
 .main{
 margin-left:260px;
 padding:16px;
+}
+
+/* ADD BOX */
+.addBox{
+background:var(--panel);
+padding:12px;
+border-radius:14px;
+display:grid;
+gap:8px;
+margin-bottom:14px;
+}
+
+.addBox input{
+padding:10px;
+border:none;
+border-radius:10px;
+background:#0f1428;
+color:white;
+}
+
+.addBtn{
+padding:10px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,var(--accent),var(--blue));
+color:white;
+font-weight:bold;
+cursor:pointer;
 }
 
 /* GRID */
@@ -104,7 +132,6 @@ align-items:center;
 padding:10px 14px;
 background:#111c33;
 border-bottom:1px solid rgba(255,255,255,.1);
-font-size:14px;
 }
 
 .sheet{
@@ -139,14 +166,11 @@ color:white;
 cursor:pointer;
 }
 
-/* =========================
-   FLOATING PANIC BUTTON
-========================= */
-
+/* FLOATING BUTTON */
 .panicBtn{
 position:fixed;
-top:12px;
-right:12px;
+top:10px;
+right:10px;
 z-index:100000;
 
 padding:8px 10px;
@@ -158,31 +182,36 @@ border-radius:10px;
 background:linear-gradient(135deg,var(--accent),var(--blue));
 color:white;
 font-weight:bold;
-
 cursor:pointer;
-opacity:0.85;
-transition:0.2s;
-}
 
-.panicBtn:hover{
-opacity:1;
-transform:scale(1.05);
+opacity:0.85;
 }
 </style>
 </head>
 
 <body>
 
-<!-- FLOATING BUTTON -->
+<!-- ALWAYS VISIBLE PANIC BUTTON -->
 <button class="panicBtn" onclick="openPanic()">📊 Panic</button>
 
-<!-- ARCADE -->
+<!-- SIDEBAR -->
 <div class="sidebar">
-<h3>🎮 Arcade V18</h3>
+<h3>🎮 Arcade</h3>
 </div>
 
+<!-- MAIN -->
 <div class="main">
+
+<div class="addBox">
+<input id="name" placeholder="Game Name">
+<input id="cat" placeholder="Category">
+<input id="url" placeholder="Game URL">
+<input id="img" placeholder="Image URL">
+<button class="addBtn" onclick="addGame()">➕ Add Game</button>
+</div>
+
 <div class="grid" id="grid"></div>
+
 </div>
 
 <!-- PLAYER -->
@@ -211,22 +240,46 @@ transform:scale(1.05);
 
 <script>
 
-let games=[
+/* LOAD SAVED GAMES */
+let games = JSON.parse(localStorage.getItem("games")) || [
 {name:"Bloons",url:"https://kiz10.com/embed-play/bloons-battles/"},
 {name:"Paper Flight",url:"https://www.rocketgames.io/embed/paper-flight"},
 {name:"Minecraft",url:"https://mcraft.fun"}
 ];
+
+function save(){
+localStorage.setItem("games",JSON.stringify(games));
+}
+
+/* ADD GAME */
+function addGame(){
+
+let n=document.getElementById("name").value.trim();
+let c=document.getElementById("cat").value.trim();
+let u=document.getElementById("url").value.trim();
+let i=document.getElementById("img").value.trim();
+
+if(!n||!u||!i){
+alert("Fill all fields");
+return;
+}
+
+games.push({name:n,cat:c,url:u,img:i});
+save();
+render();
+}
 
 /* RENDER */
 function render(){
 let g=document.getElementById("grid");
 g.innerHTML="";
 
-games.forEach(x=>{
+games.forEach((x,i)=>{
 g.innerHTML+=`
 <div class="card">
 <h4>${x.name}</h4>
 <button onclick="play('${x.url}')">Play</button>
+<button onclick="games.splice(${i},1);save();render()">🗑 Delete</button>
 </div>`;
 });
 }
@@ -245,8 +298,9 @@ document.getElementById("player").style.display="none";
 document.getElementById("frame").src="";
 }
 
-/* PANIC OPEN */
+/* PANIC MODE */
 function openPanic(){
+
 document.getElementById("panic").style.display="block";
 
 let s=document.getElementById("sheet");
@@ -257,7 +311,6 @@ s.innerHTML+=`<div class="cell">${Math.floor(Math.random()*9999)}</div>`;
 }
 }
 
-/* PANIC EXIT */
 function exitPanic(){
 document.getElementById("panic").style.display="none";
 }
