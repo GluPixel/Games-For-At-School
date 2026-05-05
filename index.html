@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V11</title>
+<title>Dylans Arcade V12</title>
 
 <style>
 :root{
@@ -130,15 +130,6 @@ font-weight:bold;
 cursor:pointer;
 }
 
-.like{
-padding:10px;
-border:none;
-border-radius:10px;
-background:#26324d;
-color:white;
-cursor:pointer;
-}
-
 .delete{
 padding:10px;
 border:none;
@@ -148,14 +139,15 @@ color:white;
 cursor:pointer;
 }
 
-/* PLAYER */
+/* PLAYER (FULL SCREEN MODE) */
 .player{
 display:none;
-margin-top:16px;
-height:75vh;
-border-radius:14px;
-overflow:hidden;
-position:relative;
+position:fixed;
+top:0;left:0;
+width:100vw;
+height:100vh;
+background:black;
+z-index:9999;
 }
 
 iframe{
@@ -164,37 +156,37 @@ height:100%;
 border:none;
 }
 
-/* OLD STYLE FULLSCREEN BUTTON */
-.fullscreenBtn{
+/* EXIT BUTTON IN FULLSCREEN */
+.exitBtn{
 position:absolute;
-bottom:10px;
+top:10px;
 right:10px;
-z-index:10;
+z-index:10000;
 
 padding:10px 14px;
 border:none;
-border-radius:12px;
+border-radius:10px;
 
 background:rgba(0,0,0,.6);
-backdrop-filter:blur(6px);
 color:white;
 font-weight:bold;
 cursor:pointer;
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-<div class="logo">🎮 Arcade V11</div>
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+<div class="logo">🎮 Arcade V12</div>
 </div>
 
-<div class="main">
+<!-- MAIN -->
+<div class="main" id="main">
 
 <!-- ADD GAME -->
-<div class="addBox">
+<div class="addBox" id="addBox">
 <input id="name" placeholder="Game Name">
 <input id="cat" placeholder="Category">
 <input id="url" placeholder="Game URL">
@@ -204,16 +196,12 @@ cursor:pointer;
 
 <div class="grid" id="grid"></div>
 
-<!-- PLAYER -->
-<div class="player" id="player">
-
-<iframe id="frame" allow="fullscreen"></iframe>
-
-<!-- OLD STYLE BUTTON -->
-<button class="fullscreenBtn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
-
 </div>
 
+<!-- FULLSCREEN PLAYER -->
+<div class="player" id="player">
+<button class="exitBtn" onclick="exitGame()">✖ Exit</button>
+<iframe id="frame" allow="fullscreen"></iframe>
 </div>
 
 <script>
@@ -266,25 +254,40 @@ document.getElementById("url").value="";
 document.getElementById("img").value="";
 }
 
-/* PLAY */
+/* PLAY (ENTER FULLSCREEN MODE) */
 function play(url){
+
 document.getElementById("frame").src=url;
+
+/* HIDE EVERYTHING */
+document.getElementById("sidebar").style.display="none";
+document.getElementById("main").style.display="none";
+
+/* SHOW PLAYER */
 document.getElementById("player").style.display="block";
 }
 
-/* EXIT FULLSCREEN */
-function toggleFullscreen(){
-let el=document.getElementById("player");
+/* EXIT FULLSCREEN MODE */
+function exitGame(){
 
-if(!document.fullscreenElement){
-el.requestFullscreen();
-}else{
-document.exitFullscreen();
+document.getElementById("frame").src="";
+
+/* RESTORE UI */
+document.getElementById("sidebar").style.display="block";
+document.getElementById("main").style.display="block";
+document.getElementById("player").style.display="none";
 }
+
+/* DELETE */
+function deleteGame(i){
+games.splice(i,1);
+save();
+render();
 }
 
 /* RENDER */
 function render(){
+
 let g=document.getElementById("grid");
 g.innerHTML="";
 
@@ -302,8 +305,7 @@ g.innerHTML+=`
 
 <div class="actions">
 <button class="play" onclick="play('${x.url}')">Play</button>
-<button class="like">❤️</button>
-<button class="delete" onclick="games.splice(${i},1);save();render()">🗑</button>
+<button class="delete" onclick="deleteGame(${i})">🗑</button>
 </div>
 
 </div>
