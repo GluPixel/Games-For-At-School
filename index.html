@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V7</title>
+<title>Dylans Arcade V8</title>
 
 <style>
 :root{
@@ -14,16 +14,13 @@
 --text:#f6f8ff;
 --accent:#7c5cff;
 --blue:#38c6ff;
+--red:#ff4d6d;
 }
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0;}
 
 body{
-font-family:Arial,Helvetica,sans-serif;
+font-family:Arial;
 background:linear-gradient(180deg,var(--bg),var(--bg2));
 color:var(--text);
 min-height:100vh;
@@ -33,10 +30,8 @@ overflow-y:auto;
 /* SIDEBAR */
 .sidebar{
 position:fixed;
-top:0;
-left:0;
-width:260px;
-height:100vh;
+left:0;top:0;
+width:260px;height:100vh;
 background:#0a1020;
 border-right:1px solid var(--line);
 padding:14px;
@@ -53,30 +48,11 @@ background:linear-gradient(135deg,var(--accent),var(--blue));
 margin-bottom:10px;
 }
 
-.sideBtn{
-width:100%;
-padding:10px;
-margin:6px 0;
-border:none;
-border-radius:10px;
-background:var(--panel);
-color:white;
-cursor:pointer;
-text-align:left;
-}
-
 /* MAIN */
 .main{
 margin-left:260px;
 width:calc(100% - 260px);
 padding:16px;
-}
-
-.hero{
-padding:16px;
-border-radius:14px;
-background:linear-gradient(135deg,var(--accent),#3b82f6);
-margin-bottom:14px;
 }
 
 /* ADD BOX */
@@ -91,9 +67,8 @@ gap:8px;
 
 .addBox input{
 padding:10px;
-border-radius:10px;
 border:none;
-outline:none;
+border-radius:10px;
 background:#0f1428;
 color:white;
 }
@@ -145,11 +120,6 @@ max-height:100%;
 padding:12px;
 }
 
-.tags{
-font-size:11px;
-opacity:.7;
-}
-
 .actions{
 display:flex;
 gap:6px;
@@ -167,51 +137,21 @@ font-weight:bold;
 cursor:pointer;
 }
 
-.like{
-background:#26324d;
+.delete{
+padding:10px;
 border:none;
 border-radius:10px;
-padding:10px;
+background:var(--red);
 color:white;
 cursor:pointer;
 }
 
-.badge{
-font-size:12px;
-color:#ffb3c1;
-margin-top:6px;
-}
-
-/* PLAYER */
 .player{
 display:none;
 margin-top:16px;
-height:75vh;
+height:70vh;
 border-radius:14px;
 overflow:hidden;
-position:relative;
-}
-
-.playerTop{
-position:absolute;
-top:0;
-left:0;
-right:0;
-z-index:10;
-display:flex;
-justify-content:space-between;
-padding:10px;
-background:rgba(0,0,0,.4);
-backdrop-filter:blur(6px);
-}
-
-.playerTop button{
-border:none;
-padding:8px 10px;
-border-radius:8px;
-cursor:pointer;
-background:#222c4a;
-color:white;
 }
 
 iframe{
@@ -226,47 +166,32 @@ border:none;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">🎮 Arcade V7</div>
-
-<button class="sideBtn" onclick="showAll()">🔥 All Games</button>
-<button class="sideBtn" onclick="showTrending()">🏆 Trending</button>
+<div class="logo">🎮 Arcade V8</div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
-<div class="hero">
-<h2>Dylans Arcade V7</h2>
-<p>Fullscreen system + added games = same behavior</p>
-</div>
-
 <!-- ADD GAME -->
 <div class="addBox">
-<input id="gname" placeholder="Game Name">
-<input id="gcat" placeholder="Category">
-<input id="gurl" placeholder="Game URL">
-<input id="gimg" placeholder="Image URL">
+<input id="name" placeholder="Game Name">
+<input id="cat" placeholder="Category">
+<input id="url" placeholder="Game URL">
+<input id="img" placeholder="Image URL">
 <button class="addBtn" onclick="addGame()">➕ Add Game</button>
 </div>
 
 <div class="grid" id="grid"></div>
 
-<!-- PLAYER -->
-<div class="player" id="player">
-
-<div class="playerTop">
-<button onclick="exitGame()">✖ Close</button>
-<button onclick="toggleFullscreen()">⛶ Fullscreen</button>
-</div>
-
-<iframe id="frame" allow="fullscreen"></iframe>
+<div class="player">
+<iframe id="frame"></iframe>
 </div>
 
 </div>
 
 <script>
 
-let games = JSON.parse(localStorage.getItem("games") || "null") || [
+let games = JSON.parse(localStorage.getItem("games")) || [
 {
 name:"Bloons Battles",
 cat:"strategy",
@@ -287,8 +212,6 @@ img:"https://upload.wikimedia.org/wikipedia/en/3/3f/Shell_Shockers_logo.png"
 }
 ];
 
-let likes = JSON.parse(localStorage.getItem("likes") || "{}");
-
 function save(){
 localStorage.setItem("games",JSON.stringify(games));
 }
@@ -296,10 +219,10 @@ localStorage.setItem("games",JSON.stringify(games));
 /* ADD GAME */
 function addGame(){
 
-let n=document.getElementById("gname").value.trim();
-let c=document.getElementById("gcat").value.trim();
-let u=document.getElementById("gurl").value.trim();
-let i=document.getElementById("gimg").value.trim();
+let n=document.getElementById("name").value.trim();
+let c=document.getElementById("cat").value.trim();
+let u=document.getElementById("url").value.trim();
+let i=document.getElementById("img").value.trim();
 
 if(!n||!u||!i){
 alert("Fill all fields");
@@ -310,40 +233,24 @@ games.push({name:n,cat:c,url:u,img:i});
 save();
 render();
 
-document.getElementById("gname").value="";
-document.getElementById("gcat").value="";
-document.getElementById("gurl").value="";
-document.getElementById("gimg").value="";
+/* clear */
+document.getElementById("name").value="";
+document.getElementById("cat").value="";
+document.getElementById("url").value="";
+document.getElementById("img").value="";
 }
 
-/* PLAY (NOW ALL SAME SYSTEM) */
+/* DELETE GAME */
+function deleteGame(index){
+games.splice(index,1);
+save();
+render();
+}
+
+/* PLAY */
 function play(url){
 document.getElementById("frame").src=url;
-document.getElementById("player").style.display="block";
-}
-
-/* EXIT */
-function exitGame(){
-document.getElementById("frame").src="";
-document.getElementById("player").style.display="none";
-}
-
-/* FULLSCREEN */
-function toggleFullscreen(){
-let el=document.getElementById("player");
-
-if(!document.fullscreenElement){
-el.requestFullscreen();
-}else{
-document.exitFullscreen();
-}
-}
-
-/* LIKE */
-function like(name){
-likes[name]=(likes[name]||0)+1;
-localStorage.setItem("likes",JSON.stringify(likes));
-render();
+document.querySelector(".player").style.display="block";
 }
 
 /* RENDER */
@@ -351,34 +258,26 @@ function render(){
 let g=document.getElementById("grid");
 g.innerHTML="";
 
-games.forEach(x=>{
-let l=likes[x.name]||0;
+games.forEach((x,i)=>{
 
 g.innerHTML+=`
 <div class="card">
-<div class="thumb"><img src="${x.img}"></div>
+<div class="thumb">
+<img src="${x.img}">
+</div>
 
 <div class="info">
 <h3>${x.name}</h3>
-<div class="tags">${x.cat}</div>
-<div class="badge">❤️ ${l}</div>
+<div>${x.cat}</div>
 
 <div class="actions">
 <button class="play" onclick="play('${x.url}')">Play</button>
-<button class="like" onclick="like('${x.name}')">❤️</button>
+<button class="delete" onclick="deleteGame(${i})">🗑</button>
 </div>
 
 </div>
 </div>`;
 });
-}
-
-/* FILTERS */
-function showAll(){render();}
-
-function showTrending(){
-games.sort((a,b)=>(likes[b.name]||0)-(likes[a.name]||0));
-render();
 }
 
 render();
