@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade V13</title>
+<title>Dylans Arcade V14</title>
 
 <style>
 :root{
@@ -35,7 +35,6 @@ width:260px;height:100vh;
 background:#0a1020;
 border-right:1px solid var(--line);
 padding:14px;
-z-index:2;
 }
 
 .logo{
@@ -52,7 +51,6 @@ margin-bottom:10px;
 .main{
 margin-left:260px;
 padding:16px;
-z-index:1;
 }
 
 /* ADD BOX */
@@ -141,7 +139,7 @@ color:white;
 cursor:pointer;
 }
 
-/* PLAYER FULLSCREEN */
+/* PLAYER */
 .player{
 display:none;
 position:fixed;
@@ -172,7 +170,7 @@ cursor:pointer;
 z-index:10000;
 }
 
-/* BOSS KEY MODE */
+/* HIDE CLASS (boss key) */
 .hidden{
 display:none !important;
 }
@@ -181,13 +179,15 @@ display:none !important;
 
 <body>
 
+<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-<div class="logo">🎮 Arcade V13</div>
+<div class="logo">🎮 Arcade V14</div>
 </div>
 
+<!-- MAIN -->
 <div class="main" id="main">
 
-<div class="addBox" id="addBox">
+<div class="addBox">
 <input id="name" placeholder="Game Name">
 <input id="cat" placeholder="Category">
 <input id="url" placeholder="Game URL">
@@ -303,16 +303,16 @@ g.innerHTML+=`
 
 render();
 
-/* HOTKEYS */
+/* HOTKEYS FIXED */
 document.addEventListener("keydown", function(e){
 
 // Ctrl + Shift + 1 → Google
-if(e.ctrlKey && e.shiftKey && e.key === "1"){
+if(e.ctrlKey && e.shiftKey && e.code === "Digit1"){
 window.open("https://www.google.com","_blank");
 }
 
-// Ctrl + Shift + 3 → Boss Key (hide everything)
-if(e.ctrlKey && e.shiftKey && e.key === "3"){
+// Ctrl + Shift + 3 → Boss key
+if(e.ctrlKey && e.shiftKey && e.code === "Digit3"){
 document.getElementById("sidebar").classList.toggle("hidden");
 document.getElementById("main").classList.toggle("hidden");
 document.getElementById("player").classList.toggle("hidden");
