@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dylans Arcade V2</title>
+
+<style>
+:root{
+--bg:#0a0d14;
+--bg2:#101626;
+--panel:#171d2c;
+--panel2:#1f2740;
+--line:rgba(255,255,255,.08);
+--text:#f6f8ff;
+--muted:#97a3c7;
+--purple:#7c5cff;
+--blue:#38c6ff;
+--green:#2fd27f;
+--red:#ff5b6e;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html,body{
+height:100%;
+overflow:hidden;
+font-family:Arial,Helvetica,sans-serif;
+background:linear-gradient(180deg,var(--bg),var(--bg2));
+color:var(--text);
+}
+
+/* LAYOUT */
+.app{
+display:grid;
+grid-template-columns:260px 1fr;
+height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+background:#0c1119;
+border-right:1px solid var(--line);
+padding:18px;
+overflow-y:auto;
+}
+
+.logo{
+font-size:28px;
+font-weight:900;
+padding:16px;
+border-radius:18px;
+text-align:center;
+background:linear-gradient(135deg,var(--purple),var(--blue));
+margin-bottom:18px;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.sideTitle{
+font-size:12px;
+color:var(--muted);
+text-transform:uppercase;
+letter-spacing:1px;
+margin:16px 0 8px;
+}
+
+.sideBtn{
+width:100%;
+padding:12px;
+margin-bottom:8px;
+border:none;
+border-radius:12px;
+background:var(--panel);
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+text-align:left;
+transition:.15s;
+}
+
+.sideBtn:hover{
+background:var(--panel2);
+transform:translateX(4px);
+}
+
+/* MAIN */
+.main{
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+/* TOPBAR */
+.topbar{
+padding:14px 18px;
+background:#0c1119;
+border-bottom:1px solid var(--line);
+display:flex;
+gap:12px;
+align-items:center;
+}
+
+.search{
+flex:1;
+padding:14px;
+border:none;
+outline:none;
+border-radius:14px;
+background:var(--panel);
+color:white;
+font-size:15px;
+}
+
+.search::placeholder{
+color:#91a0c8;
+}
+
+.topBtn{
+padding:12px 14px;
+border:none;
+border-radius:12px;
+background:var(--panel);
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* CONTENT */
+.content{
+padding:18px;
+overflow-y:auto;
+}
+
+/* HERO */
+.hero{
+padding:24px;
+border-radius:20px;
+background:linear-gradient(135deg,var(--purple),#4b70ff);
+margin-bottom:18px;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.hero h1{
+font-size:34px;
+margin-bottom:8px;
+}
+
+.hero p{
+opacity:.95;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+gap:16px;
+}
+
+/* CARD */
+.card{
+background:var(--panel);
+border-radius:18px;
+overflow:hidden;
+border:1px solid var(--line);
+display:flex;
+flex-direction:column;
+transition:.15s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+}
+
+.thumb{
+height:160px;
+background:#0f1320;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:10px;
+}
+
+.thumb img{
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+border-radius:12px;
+display:block;
+}
+
+.info{
+padding:14px;
+}
+
+.info h3{
+font-size:19px;
+margin-bottom:8px;
+}
+
+.tags{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+margin-bottom:12px;
+}
+
+.tag{
+font-size:11px;
+padding:5px 8px;
+border-radius:999px;
+background:#26304a;
+color:#d4dcff;
+}
+
+.actions{
+display:flex;
+gap:8px;
+}
+
+.btn{
+flex:1;
+padding:11px;
+border:none;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+color:white;
+}
+
+.play{
+background:linear-gradient(135deg,var(--purple),var(--blue));
+}
+
+.tab{
+background:#293654;
+}
+
+.fav{
+background:#22304a;
+width:48px;
+flex:none;
+}
+
+/* PLAYER */
+.player{
+margin-top:18px;
+height:74vh;
+border-radius:18px;
+overflow:hidden;
+border:1px solid var(--line);
+background:#000;
+display:none;
+}
+
+.playerTop{
+padding:10px;
+background:#0f1320;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.playerBtns{
+display:flex;
+gap:8px;
+}
+
+.small{
+padding:10px 12px;
+border:none;
+border-radius:10px;
+background:#24314b;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.close{
+background:var(--red);
+}
+
+iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+/* FOOTER */
+.footer{
+padding:14px;
+text-align:center;
+font-size:12px;
+color:var(--muted);
+}
+
+/* MOBILE */
+@media(max-width:950px){
+.app{
+grid-template-columns:1fr;
+}
+.sidebar{
+display:none;
+}
+.hero h1{
+font-size:26px;
+}
+.grid{
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<div class="logo">🎮 Dylans Arcade</div>
+
+<div class="sideTitle">Categories</div>
+<button class="sideBtn" onclick="filterGames('all')">🔥 All Games</button>
+<button class="sideBtn" onclick="filterGames('strategy')">🧠 Strategy</button>
+<button class="sideBtn" onclick="filterGames('flying')">✈ Flying</button>
+<button class="sideBtn" onclick="filterGames('multiplayer')">👥 Multiplayer</button>
+
+<div class="sideTitle">Extras</div>
+<button class="sideBtn" onclick="showFavorites()">⭐ Favorites</button>
+<button class="sideBtn" onclick="resetGames()">🔄 Reset</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- TOP -->
+<div class="topbar">
+<input class="search" placeholder="Search games..." oninput="searchGames(this.value)">
+<button class="topBtn" onclick="toggleTheme()">🌙</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+<div class="hero">
+<h1>Dylans Arcade V2</h1>
+<p>Play browser games instantly. Search, fullscreen, favorites, categories and more.</p>
+</div>
+
+<div class="grid" id="grid">
+
+<!-- BLOONS -->
+<div class="card game" data-name="bloons battles monkey strategy multiplayer" data-cat="strategy multiplayer">
+<div class="thumb">
+<img src="https://cdn.kiz10.com/upload/thumbnails/21132/1757453520_bloons-battles.webp">
+</div>
+<div class="info">
+<h3>Bloons Battles</h3>
+<div class="tags">
+<div class="tag">Strategy</div>
+<div class="tag">PvP</div>
+</div>
+<div class="actions">
+<button class="btn play" onclick="playGame('https://kiz10.com/embed-play/bloons-battles/?img=21132/1757453520_bloons-battles.webp','Bloons Battles')">Play</button>
+<button class="btn tab" onclick="window.open('https://kiz10.com/embed-play/bloons-battles/?img=21132/1757453520_bloons-battles.webp')">Tab</button>
+<button class="btn fav" onclick="favGame('Bloons Battles')">★</button>
+</div>
+</div>
+</div>
+
+<!-- PAPER FLIGHT -->
+<div class="card game" data-name="paper flight flying plane arcade" data-cat="flying">
+<div class="thumb">
+<img src="https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper-flight.jpeg">
+</div>
+<div class="info">
+<h3>Paper Flight</h3>
+<div class="tags">
+<div class="tag">Flying</div>
+<div class="tag">Arcade</div>
+</div>
+<div class="actions">
+<button class="btn play" onclick="playGame('https://www.rocketgames.io/embed/paper-flight','Paper Flight')">Play</button>
+<button class="btn tab" onclick="window.open('https://www.rocketgames.io/embed/paper-flight')">Tab</button>
+<button class="btn fav" onclick="favGame('Paper Flight')">★</button>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- PLAYER -->
+<div class="player" id="player">
+<div class="playerTop">
+<b id="title">Game</b>
+
+<div class="playerBtns">
+<button class="small" onclick="reloadGame()">⟳</button>
+<button class="small" onclick="fullGame()">⛶</button>
+<button class="small close" onclick="closeGame()">✕</button>
+</div>
+</div>
+
+<iframe id="frame" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+</div>
+
+<div class="footer">
+Dylans Arcade V2 • Free HTML Website Ready
+</div>
+
+</div>
+</div>
+</div>
+
+<script>
+const frame=document.getElementById("frame");
+const player=document.getElementById("player");
+const title=document.getElementById("title");
+
+let currentURL="";
+
+/* PLAY */
+function playGame(url,name){
+currentURL=url;
+title.innerText=name;
+frame.src=url;
+player.style.display="block";
+player.scrollIntoView({behavior:"smooth"});
+}
+
+/* CLOSE */
+function closeGame(){
+frame.src="about:blank";
+player.style.display="none";
+}
+
+/* RELOAD */
+function reloadGame(){
+if(currentURL) frame.src=currentURL;
+}
+
+/* FULLSCREEN FIXED */
+function fullGame(){
+if(frame.requestFullscreen){
+frame.requestFullscreen();
+}else if(frame.webkitRequestFullscreen){
+frame.webkitRequestFullscreen();
+}else if(frame.msRequestFullscreen){
+frame.msRequestFullscreen();
+}
+}
+
+/* SEARCH */
+function searchGames(q){
+q=q.toLowerCase();
+document.querySelectorAll(".game").forEach(g=>{
+g.style.display=g.dataset.name.includes(q)?"flex":"none";
+});
+}
+
+/* FILTER */
+function filterGames(cat){
+document.querySelectorAll(".game").forEach(g=>{
+if(cat==="all") g.style.display="flex";
+else g.style.display=g.dataset.cat.includes(cat)?"flex":"none";
+});
+}
+
+/* RESET */
+function resetGames(){
+document.querySelectorAll(".game").forEach(g=>g.style.display="flex");
+}
+
+/* FAVORITES */
+function favGame(name){
+let favs=JSON.parse(localStorage.getItem("dylanFavs")||"[]");
+if(!favs.includes(name)) favs.push(name);
+localStorage.setItem("dylanFavs",JSON.stringify(favs));
+alert(name+" added to favorites!");
+}
+
+function showFavorites(){
+let favs=JSON.parse(localStorage.getItem("dylanFavs")||"[]");
+document.querySelectorAll(".game").forEach(g=>{
+g.style.display=favs.some(f=>g.dataset.name.includes(f.toLowerCase()))?"flex":"none";
+});
+}
+
+/* THEME */
+function toggleTheme(){
+document.body.style.filter=
+document.body.style.filter==="invert(1) hue-rotate(180deg)"
+? ""
+: "invert(1) hue-rotate(180deg)";
+}
+</script>
+
+</body>
+</html>
