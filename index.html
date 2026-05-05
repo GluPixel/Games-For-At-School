@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dylans Arcade FIXED FINAL</title>
+<title>Dylans Arcade FINAL</title>
 
 <style>
 :root{
@@ -27,12 +27,13 @@ font-family:Arial,Helvetica,sans-serif;
 background:linear-gradient(180deg,var(--bg),var(--bg2));
 color:var(--text);
 
-/* REAL SCROLL ONLY */
+/* REAL PAGE SCROLL */
 min-height:100vh;
 overflow-y:auto;
+overflow-x:hidden;
 }
 
-/* FIXED SIDEBAR */
+/* SIDEBAR */
 .sidebar{
 position:fixed;
 top:0;
@@ -75,13 +76,14 @@ cursor:pointer;
 text-align:left;
 }
 
-/* 🔥 FIX: FULL WIDTH MAIN AREA */
+/* MAIN */
 .main{
 margin-left:260px;
 width:calc(100% - 260px);
 padding:16px;
 }
 
+/* HERO */
 .hero{
 padding:16px;
 border-radius:14px;
@@ -89,6 +91,7 @@ background:linear-gradient(135deg,var(--accent),#3b82f6);
 margin-bottom:14px;
 }
 
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
@@ -183,25 +186,26 @@ border:none;
 
 <!-- SIDEBAR -->
 <div class="sidebar">
-<div class="logo">🎮 Arcade FIX</div>
+<div class="logo">🎮 Arcade</div>
+
 <div class="profile" id="profile">Player: Guest</div>
 
-<button class="sideBtn" onclick="setName()">👤 Name</button>
-<button class="sideBtn" onclick="showAll()">🔥 All</button>
+<button class="sideBtn" onclick="setName()">👤 Set Name</button>
+<button class="sideBtn" onclick="showAll()">🔥 All Games</button>
 <button class="sideBtn" onclick="showTrending()">🏆 Trending</button>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div class="main">
 
 <div class="hero">
-<h2>Dylans Arcade (FULL FIX)</h2>
-<p>No squish • no broken scroll • clean layout</p>
+<h2>Dylans Arcade</h2>
+<p>Clean fixed system • no bugs • working scroll</p>
 </div>
 
 <div class="grid" id="grid"></div>
 
-<div class="player">
+<div class="player" id="player">
 <iframe id="frame"></iframe>
 </div>
 
@@ -210,9 +214,24 @@ border:none;
 <script>
 
 let games=[
-{name:"Bloons Battles",cat:"strategy",url:"https://kiz10.com/embed-play/bloons-battles/",img:"https://cdn.kiz10.com/upload/thumbnails/21132/1757453520_bloons-battles.webp"},
-{name:"Paper Flight",cat:"flying",url:"https://www.rocketgames.io/embed/paper-flight",img:"https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper-flight.jpeg"},
-{name:"Shell Shockers",cat:"multiplayer",url:"https://shellshock.io/",img:"https://shellshock.io/img/favicon.png"}
+{
+name:"Bloons Battles",
+cat:"strategy",
+url:"https://kiz10.com/embed-play/bloons-battles/",
+img:"https://cdn.kiz10.com/upload/thumbnails/21132/1757453520_bloons-battles.webp"
+},
+{
+name:"Paper Flight",
+cat:"flying",
+url:"https://www.rocketgames.io/embed/paper-flight",
+img:"https://www.speldome.com/wp-content/uploads/thumbs/gamedistribution/P/paper-flight.jpeg"
+},
+{
+name:"Shell Shockers",
+cat:"multiplayer",
+url:"https://sites.google.com/bluewizard.com/play-shell/home",
+img:"https://static.wikia.nocookie.net/shellshockers/images/2/2a/Shell_Shockers_logo.png/revision/latest?cb=20180902103338"
+}
 ];
 
 let likes=JSON.parse(localStorage.getItem("likes")||"{}");
@@ -257,7 +276,7 @@ render();
 
 function play(url){
 document.getElementById("frame").src=url;
-document.querySelector(".player").style.display="block";
+document.getElementById("player").style.display="block";
 }
 
 function showAll(){render(games);}
